@@ -37,7 +37,7 @@
             Console.WriteLine("Enter Patient discharge date :");
 
 
-            string? date = Console.ReadLine();
+            DateOnly date ;
 
             if (date != "")
             {
