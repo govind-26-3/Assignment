@@ -25,7 +25,7 @@ namespace Assignment3.Model
             Console.WriteLine("Enter Car Nodel name");
             model = Console.ReadLine();
 
-            Console.WriteLine("Enter manufacturing yaer");
+            Console.WriteLine("Enter manufacturing year");
             year = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Enter car price");
