@@ -11,11 +11,17 @@ namespace ConsoleApp1.Model
     {
         static int userCount;
 
-        public User()
+
+        static User()
         {
             userCount++;
-
         }
+
+        //public User()
+        //{
+        //    userCount++;
+
+        //}
         public void Display() { Console.WriteLine($"number of users :{userCount}"); }
 
 
