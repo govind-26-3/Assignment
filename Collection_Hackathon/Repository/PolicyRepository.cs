@@ -12,7 +12,8 @@ namespace Collection_Hackathon.Repository
 {
     internal class PolicyRepository : IPolicy
     {
-         List<Policy> policies = new List<Policy>();
+        List<Policy> policies = new List<Policy>() {
+         new Policy(101,"Govind",PolicyType.Life,new DateTime(2025,12,21),new DateTime(2039,12,21))};
         private int policyID;
         string policyHolderName ="";
         PolicyType policyType;
@@ -144,8 +145,39 @@ namespace Collection_Hackathon.Repository
             Console.WriteLine("\n");
             foreach (var item in policies)
             {
-                Console.WriteLine($"Policy id :{item.PolicyId}    Policy Holder Name :{item.PolicyHolderName}   Policy Type :{item.policyType}   Policy Start date :{item.StartTime}   Policy End Date :{item.EndTime}  \n");
+                Console.WriteLine($"Policy id :{item.PolicyId}    Policy Holder Name :{item.PolicyHolderName}   Policy Type :{item.policyType}   Policy Start date :{item.StartTime:yyyy-mm-dd}Date :{item.EndTime:yyyy-mm-dd}");
             }
+        }
+
+        //public void SearchPolicyById(int pId)
+        //{
+        //    var sPolicy=policies.Where(p=>p.PolicyId==pId);
+        //    foreach (var item in sPolicy)
+        //    {
+        //        Console.WriteLine($"Policy id :{item.PolicyId}    Policy Holder Name :{item.PolicyHolderName}   Policy Type :{item.policyType}   Policy Start date :{item.StartTime}   Policy End Date :{item.EndTime}  \n");
+
+        //    }
+        //}
+        public void SearchById(int id)
+        {
+           
+                if (GetPolicyById(id) != null)
+                {
+                    var search = policies.Where(p => p.PolicyId == id);
+                    foreach (var sp in search)
+                    {
+
+                        Console.WriteLine($"Policy Id:{sp.PolicyId}\t Policy Holder Name:{sp.PolicyHolderName}\tPolicy Type:{sp.policyType}\t Start Date:{sp.StartTime:yyyy-MM-dd}\tEnd Date:{sp.EndTime:yyyy-MM-dd}");
+                    }
+
+                }
+                else
+                {
+                    throw new PolicyNotFound($"Policy Id:{id} is not Found!!");
+                }
+            
+
+
         }
 
         public Policy GetPolicyById(int pId)

@@ -46,7 +46,7 @@ namespace Collection_Hackathon
                     case 6:
                         Console.WriteLine("Enter Policy Id to View Policy");
                         int getId = Convert.ToInt32(Console.ReadLine());
-                        policy.GetPolicyById(getId);
+                        policy.SearchById(getId);
                         break;
                     case 7:
                         return;
