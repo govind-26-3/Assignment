@@ -141,7 +141,14 @@ namespace Collection_Hackathon.Repository
         }
 
         public void GetAllPolicies()
+
         {
+            if (policies.Count ==0)
+            {
+                Console.WriteLine("No data available");
+                return;
+            }
+
             Console.WriteLine("\n");
             foreach (var item in policies)
             {
