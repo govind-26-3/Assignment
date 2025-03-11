@@ -12,7 +12,7 @@ namespace SqlHackathon.Repository
         int AddPolicy(Policy policy);
         List<Policy> GetAllPolicies();
         int DeletePolicyById(int pId);
-        //    Policy GetPolicyById(int pId);
+            //Policy GetPolicyById(int pId);
 
             int UpdatePolicyById(int pId);
     }

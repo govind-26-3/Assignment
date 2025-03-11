@@ -14,14 +14,14 @@ namespace SqlHackathon.Repository
 {
     internal class PolicyRepository : IPolicy
     {
-        List<Policy> policies = new List<Policy>();
-        //private int policyID;
+        //List<Policy> policies = new List<Policy>();
+        ////private int policyID;
         string policyHolderName = "";
         PolicyType policyType;
         DateTime startDate;
         DateTime endDate;
 
-        //SqlConnection connection;
+        
         string connstring;
         SqlCommand cmd;
 
@@ -30,16 +30,12 @@ namespace SqlHackathon.Repository
             cmd = new SqlCommand();
             connstring = DbConnUtil.GetConnectionString();
 
-            //connection = new SqlConnection("Server=DESKTOP-O76T7LH;Database=PolicyManagemnet;Trusted_Connection=True")
         }
 
         public int AddPolicy(Policy policy)
         {
             using (SqlConnection sqlConnection = new SqlConnection(connstring))
             {
-
-
-
                 while (true)
                 {
                     Console.Write("Enter Policy Holder Name: ");
@@ -84,11 +80,11 @@ namespace SqlHackathon.Repository
                     Console.WriteLine("End date must be later than the start date. Please enter a valid end date.");
                 }
 
+                cmd.Parameters.Clear();
 
                 cmd.CommandText = "INSERT INTO Policies VALUES ( @PolicyHolderName, @policyType, @StartTime, @EndTime)";
 
 
-                //cmd.Parameters.AddWithValue("@PolicyId", policyID);
                 cmd.Parameters.AddWithValue("@PolicyHolderName", policyHolderName);
                 cmd.Parameters.AddWithValue("@policyType", (int)policyType);
                 cmd.Parameters.AddWithValue("@StartTime", startDate);
@@ -98,9 +94,6 @@ namespace SqlHackathon.Repository
 
                 Console.WriteLine("Policy Added Successfully!");
                 return cmd.ExecuteNonQuery();
-
-
-
 
             }
         }
@@ -113,6 +106,7 @@ namespace SqlHackathon.Repository
             {
                 using (SqlConnection sqlConnection = new SqlConnection(connstring))
                 {
+                    cmd.Parameters.Clear();
                     cmd.CommandText = "Delete from Policies where policyId=@PolicyId";
                     cmd.Parameters.AddWithValue("@PolicyId", pId);
                     cmd.Connection = sqlConnection;
@@ -165,33 +159,39 @@ namespace SqlHackathon.Repository
 
         }
 
-
-
-        //public Policy GetPolicyById(int pId)
-        //{
-        //}
-
-
-
         public int UpdatePolicyById(int pId)
         {
             int res = 0;
 
             using (SqlConnection sqlConnection = new SqlConnection(connstring))
             {
+                cmd.Parameters.Clear();
 
-                //SqlDataReader reader = cmd.ExecuteReader();
+                sqlConnection.Open();
+                cmd.Connection = sqlConnection;
 
-                cmd.CommandText = "Update Policies set PolicyHolderName=@PolicyHolderName,@PolicyType=PolicyType,@EndTime=EndTime where PolicyId=@PolicyId";
-                cmd.Parameters.AddWithValue("@PolicyId", pId);
+                using (SqlConnection sqlConn = new SqlConnection(connstring))
+
+                {
+                    cmd.CommandText = "SELECT COUNT(*) FROM Policies WHERE PolicyId = @PolicyId";
+                    cmd.Parameters.AddWithValue("@PolicyId", pId);
+                    int count = (int)cmd.ExecuteScalar();
+                    if (count == 0)
+                    {
+                        Console.WriteLine($"Policy Id {pId} Not Found!");
+                        return 0;
+                    }
+                }
+                cmd.Parameters.Clear();
+
+                string newPolicyHolderName;
                 while (true)
                 {
                     Console.Write("Enter New Policy Holder Name: ");
-                    string newPolicyHolderName = Console.ReadLine();
+                    newPolicyHolderName = Console.ReadLine();
                     if (!string.IsNullOrWhiteSpace(newPolicyHolderName))
                     {
-                        cmd.Parameters.AddWithValue("@PolicyHolderName", newPolicyHolderName);
-                        //res.PolicyHolderName = newPolicyHolderName;
+
                         break;
                     }
                     else
@@ -200,25 +200,24 @@ namespace SqlHackathon.Repository
                     }
                 }
 
+                PolicyType newPolicyType;
                 while (true)
                 {
                     Console.WriteLine("Enter New Policy Type (Life, Health, Vehicle, Property): ");
-                    //Console.WriteLine("Enter Policy Type (Life, Health, Vehicle, Property): ");
                     string policyTypeIn = Console.ReadLine();
-                    if (Enum.TryParse(Console.ReadLine(), true, out PolicyType newPolicyType) && Enum.IsDefined(typeof(PolicyType), newPolicyType))
+                    if (Enum.TryParse(policyTypeIn, true, out newPolicyType) && Enum.IsDefined(typeof(PolicyType), newPolicyType))
                     {
-                        cmd.Parameters.AddWithValue("@PolicyType", newPolicyType);
                         break;
                     }
                     Console.WriteLine("Invalid!! Please enter a valid policy type (Life, Health, Vehicle, Property).");
                 }
 
+                DateTime newEndDate;
                 while (true)
                 {
                     Console.Write("Enter New End Date (yyyy-MM-dd): ");
-                    if (DateTime.TryParse(Console.ReadLine(), out DateTime newEndDate) && newEndDate > DateTime.Now)
+                    if (DateTime.TryParse(Console.ReadLine(), out newEndDate) && newEndDate > DateTime.Now)
                     {
-                        cmd.Parameters.AddWithValue("@EndTime", newEndDate);
                         break;
                     }
                     else
@@ -228,20 +227,20 @@ namespace SqlHackathon.Repository
                 }
 
 
-                cmd.Connection = sqlConnection;
-                sqlConnection.Open();
+                cmd.CommandText = "UPDATE Policies SET PolicyHolderName = @PolicyHolderName, PolicyType = @PolicyType, EndTime = @EndTime WHERE PolicyId = @PolicyId";
+                cmd.Parameters.AddWithValue("@PolicyId", pId);
+                cmd.Parameters.AddWithValue("@PolicyType", (int)newPolicyType);
+                cmd.Parameters.AddWithValue("@EndTime", newEndDate);
+                cmd.Parameters.AddWithValue("@PolicyHolderName", newPolicyHolderName);
+                
                 res = cmd.ExecuteNonQuery();
                 if (res == 1)
                 {
 
                     Console.WriteLine("Policy Updated Successfully!");
+                    return res;
 
                 }
-
-
-                //Console.WriteLine($"Policy Id::{pId} Not Found!!!");
-
-
             }
             return res;
         }

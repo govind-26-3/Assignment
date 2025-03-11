@@ -16,8 +16,8 @@ namespace SqlHackathon
                                   "Press 2 to Delete policy\n\n" +
                                   "Press 3 to View All Policies\n\n" +
                                   "Press 4 to Update Policy\n\n" +
-                                  "Press 6 to View Policy\n\n" +
-                                  "Press 7 to Exit\n\n");
+                                  //"Press 5 to View Policy By Id\n\n" +
+                                  "Press 5 to Exit\n\n");
 
                 int choice = Convert.ToInt32(Console.ReadLine());
 
@@ -39,11 +39,16 @@ namespace SqlHackathon
                         }
                         break;
                     case 4:
-                        //Console.WriteLine("Enter Policy Id to Update Policy");
-                        //int dId = Convert.ToInt32(Console.ReadLine());
-                        //policy.UpdatePolicyById(dId);
+                        Console.WriteLine("Enter Policy Id to Update Policy");
+                        int dId = Convert.ToInt32(Console.ReadLine());
+                        policy.UpdatePolicyById(dId);
                         break;
-                    case 7:
+                    //case 5:
+                    //    Console.WriteLine("Enter Policy Id to View Policy");
+                    //    int getById = Convert.ToInt32(Console.ReadLine());
+                    //    policy.GetPolicyById(getById);
+                    //    break;
+                    case 5:
                         return;
                     default:
                         Console.WriteLine("Invalid choice. Please try again.");

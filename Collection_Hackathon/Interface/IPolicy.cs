@@ -12,12 +12,12 @@ namespace Collection_Hackathon.Interface
 
         void AddPolicy();
         void GetAllPolicies();
-        void SearchById(int id);
+        void DeletePolicyById(int pId);
         Policy GetPolicyById(int pId);
 
         void UpdatePolicyById(int pId);
+        void SearchById(int id);
 
-        void DeletePolicyById(int pId);
 
         List<Policy> ViewActivePolicy();
 
