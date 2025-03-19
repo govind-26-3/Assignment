@@ -14,8 +14,7 @@ namespace SqlHackathon.Repository
 {
     internal class PolicyRepository : IPolicy
     {
-        //List<Policy> policies = new List<Policy>();
-        ////private int policyID;
+        
         string policyHolderName = "";
         PolicyType policyType;
         DateTime startDate;
