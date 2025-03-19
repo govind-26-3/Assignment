@@ -1,8 +1,8 @@
 ﻿using Clinic_Appointment_System.Models;
 
-namespace Clinic_Appointment_System.Repository
+namespace Clinic_Appointment_System.Services
 {
-    public interface IDoctorRepository
+    public interface IDoctorService
     {
         Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
         Task<Doctor> GetDoctorByIdAsync(int id);

@@ -2,7 +2,7 @@
 {
     public class DoctorNotFoundException : ApplicationException
     {
-        public DoctorNotFoundException(int doctorId):base($"Doctor with ID {doctorId} not found.")
+        public DoctorNotFoundException(string? msg):base(msg)
         {
         }
     }

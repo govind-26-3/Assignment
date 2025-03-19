@@ -1,7 +1,8 @@
 ﻿using Clinic_Appointment_System.Context;
 using Clinic_Appointment_System.Models;
 using Microsoft.EntityFrameworkCore;
-using static System.Reflection.Metadata.BlobBuilder;
+using Microsoft.VisualBasic;
+
 
 namespace Clinic_Appointment_System.Repository
 {
@@ -14,14 +15,19 @@ namespace Clinic_Appointment_System.Repository
             _context = context;
         }
 
-        public Task AddDoctorAsync(Doctor doctor)
+        public async Task<int> AddDoctorAsync(Doctor doctor)
         {
-            throw new NotImplementedException();
+            await _context.Doctors.AddAsync(doctor);
+            return await _context.SaveChangesAsync();
         }
 
-        public Task DeleteDoctorAsync(int id)
+        public async Task<int> DeleteDoctorAsync(int id)
         {
-            throw new NotImplementedException();
+            var doctor = await GetDoctorByIdAsync(id);
+
+            _context.Doctors.Remove(doctor);
+            return await _context.SaveChangesAsync();
+
         }
 
         public async Task<IEnumerable<Doctor>> GetAllDoctorsAsync()
@@ -29,14 +35,18 @@ namespace Clinic_Appointment_System.Repository
             return await _context.Doctors.Include(b => b.Appointments).ToListAsync();
         }
 
-        public Task<Doctor> GetDoctorByIdAsync(int id)
+        public async Task<Doctor> GetDoctorByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Doctors.Include(d => d.Appointments).FirstOrDefaultAsync(b => b.Id == id); ;
         }
 
-        public Task UpdateDoctorAsync(Doctor doctor)
+        public async Task<int> UpdateDoctorAsync(int id)
         {
-            throw new NotImplementedException();
+            var doctor =await GetDoctorByIdAsync(id);
+            if (doctor!=null)
+            {
+                doctor.Specialty = 
+            }
         }
     }
 }
