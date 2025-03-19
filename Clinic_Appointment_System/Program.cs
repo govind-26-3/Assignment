@@ -1,8 +1,7 @@
 using Clinic_Appointment_System.Context;
 using Clinic_Appointment_System.Repository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-//using Microsoft.EntityFrameworkCore;
+
 
 
 namespace Clinic_Appointment_System

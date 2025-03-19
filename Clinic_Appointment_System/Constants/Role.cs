@@ -1,6 +1,6 @@
-﻿namespace Clinic_Appointment_System.Models.Constants
+﻿namespace Clinic_Appointment_System.Constants
 {
-    
+
     public enum Role
     {
         Patient = 1,

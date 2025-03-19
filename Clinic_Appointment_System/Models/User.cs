@@ -1,6 +1,8 @@
-﻿namespace Clinic_Appointment_System.Models
+﻿using Clinic_Appointment_System.Constants;
+
+namespace Clinic_Appointment_System.Models
 {
-    
+
     public class User
     {
         public int Id { get; set; }
@@ -10,5 +12,7 @@
         public string Email { get; set; }
 
         public string Password { get; set; }
+    
+        public Role Role { get; set; }
     }
 }
