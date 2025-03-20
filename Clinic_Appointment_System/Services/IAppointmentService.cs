@@ -1,9 +1,9 @@
 ﻿using Clinic_Appointment_System.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Clinic_Appointment_System.Repository
+namespace Clinic_Appointment_System.Services
 {
-    public interface IAppointmentRepository
+    public interface IAppointmentService
     {
         Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(int userId);
         Task<Appointment> GetAppointmentByIdAsync(int id);

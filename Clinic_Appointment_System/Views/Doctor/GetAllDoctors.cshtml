@@ -31,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.Speciality)
             </td>
             <td>
-                <a asp-action="UpdateDoctor" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="UpdateDoctor" asp-route-id="@item.DoctorId">Edit</a> |
                 @* <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
-                <a asp-action="DeleteDoctor" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="DeleteDoctor" asp-route-id="@item.DoctorId">Delete</a>
             </td>
         </tr>
 }

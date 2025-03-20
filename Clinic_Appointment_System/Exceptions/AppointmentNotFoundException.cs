@@ -2,8 +2,8 @@
 {
     public class AppointmentNotFoundException : ApplicationException
     {
-        public AppointmentNotFoundException(int appointmentId)
-        : base($"Appointment with ID {appointmentId} not found.")
+        public AppointmentNotFoundException(string? msg)
+        : base(msg)
         {
         }
     }

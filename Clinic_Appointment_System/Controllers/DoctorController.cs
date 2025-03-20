@@ -68,7 +68,7 @@ namespace Clinic_Appointment_System.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteDoctor(Doctor doctor)
         {
-            await _doctorService.DeleteDoctorAsync(doctor.Id);
+            await _doctorService.DeleteDoctorAsync(doctor.DoctorId);
             return RedirectToAction("GetAllDoctors");
         }
     }

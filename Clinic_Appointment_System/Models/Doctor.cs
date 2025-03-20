@@ -7,7 +7,7 @@ namespace Clinic_Appointment_System.Models
     {
         //[Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-        public int Id { get; set; }
+        public int DoctorId { get; set; }
         //[MaxLength(25)]
         //[Required]
         public string Name { get; set; }

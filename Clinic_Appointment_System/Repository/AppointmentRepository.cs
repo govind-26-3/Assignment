@@ -1,5 +1,6 @@
 ﻿using Clinic_Appointment_System.Context;
 using Clinic_Appointment_System.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clinic_Appointment_System.Repository
@@ -31,24 +32,31 @@ namespace Clinic_Appointment_System.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateAppointmentStatusAsync(int id, string status)
+        public async Task<int> UpdateAppointmentStatusAsync(int id, string status)
         {
             var appointment = await GetAppointmentByIdAsync(id);
             if (appointment != null)
             {
                 appointment.Status = status;
-                await _context.SaveChangesAsync();
+               return  await _context.SaveChangesAsync();
             }
+            return 0;
         }
 
-        public async Task DeleteAppointmentAsync(int id)
+        public async Task<int> DeleteAppointmentAsync(int id)
         {
             var appointment = await GetAppointmentByIdAsync(id);
             if (appointment != null)
             {
                 _context.Appointments.Remove(appointment);
-                await _context.SaveChangesAsync();
+               return await _context.SaveChangesAsync();
             }
+            return 0;
+        }
+
+        public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
+        {
+            return await _context.Appointments.ToListAsync();
         }
     }
 }
