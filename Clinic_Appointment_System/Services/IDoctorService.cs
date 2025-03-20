@@ -7,7 +7,7 @@ namespace Clinic_Appointment_System.Services
         Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
         Task<Doctor> GetDoctorByIdAsync(int id);
         Task<int> AddDoctorAsync(Doctor doctor);
-        Task<int> UpdateDoctorAsync(int id);
+        Task<int> UpdateDoctorAsync(Doctor doctor);
         Task<int> DeleteDoctorAsync(int id);
     }
 }

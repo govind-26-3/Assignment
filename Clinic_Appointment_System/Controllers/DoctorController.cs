@@ -1,6 +1,7 @@
-﻿using Clinic_Appointment_System.Exceptions;
+﻿
 using Clinic_Appointment_System.Models;
-using Clinic_Appointment_System.Repository;
+
+using Clinic_Appointment_System.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic_Appointment_System.Controllers
@@ -8,54 +9,66 @@ namespace Clinic_Appointment_System.Controllers
     public class DoctorController : Controller
     {
 
-        readonly IDoctorRepository _doctorRepository;
+        readonly IDoctorService _doctorService;
 
-        public DoctorController(IDoctorRepository doctorRepository)
+        public DoctorController(IDoctorService doctorService)
         {
-            _doctorRepository = doctorRepository;
+            _doctorService = doctorService;
         }
 
         public async Task<IActionResult> GetAllDoctors()
         {
-            return View(await _doctorRepository.GetAllDoctorsAsync());
+            return View(await _doctorService.GetAllDoctorsAsync());
         }
 
-        public async Task<IActionResult> Details(int id)
+        public async Task<IActionResult> AddDoctor()
         {
-            var doctor = await _doctorRepository.GetDoctorByIdAsync(id);
-            if (doctor == null)
-            {
-                throw new DoctorNotFoundException(id);
-            }
-            return View(doctor);
+            //var doctor = await _doctorService.GetDoctorByIdAsync(id);
+            //return View(doctor);
+            return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Doctor doctor)
+        public async Task<IActionResult> AddDoctor(Doctor doctor)
         {
+            ModelState.Remove("Appointments");
             if (ModelState.IsValid)
             {
-                await _doctorRepository.AddDoctorAsync(doctor);
+                await _doctorService.AddDoctorAsync(doctor);
                 return RedirectToAction("GetAllDoctors");
             }
             return View(doctor);
         }
+
+        public async Task<IActionResult> UpdateDoctor(int id)
+        {
+
+            return View(await _doctorService.GetDoctorByIdAsync(id));
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> UpdateDoctor(Doctor doctor)
         {
+            ModelState.Remove("Appointments");
             if (ModelState.IsValid)
             {
-                await _doctorRepository.UpdateDoctorAsync(doctor);
+                await _doctorService.UpdateDoctorAsync(doctor);
                 return RedirectToAction("GetAllDoctors");
             }
             return View(doctor);
         }
+        public async Task<IActionResult> DeleteDoctor(int id)
+        {
+            var doctor = await _doctorService.GetDoctorByIdAsync(id);
+            return View(doctor);
+        }
+
 
         [HttpPost]
-        public async Task<IActionResult> DeleteDoctorById(int id)
+        public async Task<IActionResult> DeleteDoctor(Doctor doctor)
         {
-            await _doctorRepository.DeleteDoctorAsync(id);
+            await _doctorService.DeleteDoctorAsync(doctor.Id);
             return RedirectToAction("GetAllDoctors");
         }
     }

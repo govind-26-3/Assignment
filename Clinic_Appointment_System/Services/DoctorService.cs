@@ -35,9 +35,9 @@ namespace Clinic_Appointment_System.Services
             return doctor;
         }
 
-        public async Task<int> UpdateDoctorAsync(int id)
+        public async Task<int> UpdateDoctorAsync(Doctor doctor)
         {
-            return await _docRepository.UpdateDoctorAsync(id);
+            return await _docRepository.UpdateDoctorAsync(doctor);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Clinic_Appointment_System.Models
         //[Required]
         public string Name { get; set; }
 
-        public string Specialty { get; set; }
+        public string Speciality { get; set; }
         public List<Appointment> Appointments { get; set; }
 
 

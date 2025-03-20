@@ -1,5 +1,6 @@
 using Clinic_Appointment_System.Context;
 using Clinic_Appointment_System.Repository;
+using Clinic_Appointment_System.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -19,6 +20,8 @@ namespace Clinic_Appointment_System
             builder.Services.AddDbContext<ClinicContext>(opt => opt.UseSqlServer(conn));
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
+
 
             //builder.Services.AddDbContext<>
             var app = builder.Build();

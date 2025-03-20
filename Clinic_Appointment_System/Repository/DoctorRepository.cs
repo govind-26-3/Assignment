@@ -37,16 +37,22 @@ namespace Clinic_Appointment_System.Repository
 
         public async Task<Doctor> GetDoctorByIdAsync(int id)
         {
-            return await _context.Doctors.Include(d => d.Appointments).FirstOrDefaultAsync(b => b.Id == id); ;
+            return await _context.Doctors.Include(d => d.Appointments).FirstOrDefaultAsync(b => b.Id == id);
         }
 
-        public async Task<int> UpdateDoctorAsync(int id)
+        public async Task<int> UpdateDoctorAsync(Doctor doctor)
         {
-            var doctor =await GetDoctorByIdAsync(id);
-            if (doctor!=null)
+            var doct = await GetDoctorByIdAsync(doctor.Id);
+
+            if (doct != null)
             {
-                doctor.Specialty = 
+                doct.Id = doctor.Id;
+                doct.Speciality = doctor.Speciality;
+                doct.Name = doctor.Name;
+
             }
+            _context.Doctors.Update(doct);
+            return await _context.SaveChangesAsync();
         }
     }
 }
