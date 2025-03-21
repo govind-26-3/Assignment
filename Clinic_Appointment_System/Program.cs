@@ -1,6 +1,8 @@
 using Clinic_Appointment_System.Context;
+using Clinic_Appointment_System.Models;
 using Clinic_Appointment_System.Repository;
 using Clinic_Appointment_System.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -19,8 +21,11 @@ namespace Clinic_Appointment_System
             string conn = builder.Configuration.GetConnectionString("LocalConnectionString");
             builder.Services.AddDbContext<ClinicContext>(opt => opt.UseSqlServer(conn));
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
+            builder.Services.AddIdentity<User,IdentityRole>()
+                            .AddEntityFrameworkStores<ClinicContext>();
 
 
             //builder.Services.AddDbContext<>
@@ -37,9 +42,11 @@ namespace Clinic_Appointment_System
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseAuthentication();
+
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

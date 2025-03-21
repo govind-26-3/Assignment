@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<Clinic_Appointment_System.Models.Appointment>
 
 @{
-    ViewData["Title"] = "GetAllAppointment";
+    ViewData["Title"] = "GetAllAppointments";
 }
+<h1>All Appointments</h1>
+@* <h1>GetAllAppointments</h1> *@
 
-<h1>GetAllAppointments</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<p> 
+    <a asp-action="AddAppointment">Create New Appointmnet</a> 
+ </p>
 <table class="table">
     <thead>
         <tr>
@@ -31,10 +31,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Patient.UserId)
+                @Html.DisplayFor(modelItem => item.Patient.FirstName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Doctor.DoctorId)
+                @Html.DisplayFor(modelItem => item.Doctor.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AppointmentDate)

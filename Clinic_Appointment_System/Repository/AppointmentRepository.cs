@@ -1,4 +1,5 @@
-﻿using Clinic_Appointment_System.Context;
+﻿using Clinic_Appointment_System.Constants;
+using Clinic_Appointment_System.Context;
 using Clinic_Appointment_System.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -35,10 +36,11 @@ namespace Clinic_Appointment_System.Repository
         public async Task<int> UpdateAppointmentStatusAsync(int id, string status)
         {
             var appointment = await GetAppointmentByIdAsync(id);
-            if (appointment != null)
+            if (Enum.TryParse(status, true, out Status parStatus))
             {
-                appointment.Status = status;
-               return  await _context.SaveChangesAsync();
+                
+                appointment.Status = parStatus;
+                return await _context.SaveChangesAsync();
             }
             return 0;
         }
@@ -56,7 +58,8 @@ namespace Clinic_Appointment_System.Repository
 
         public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
         {
-            return await _context.Appointments.ToListAsync();
+            //return await _context.Appointments.ToListAsync();
+            return await _context.Appointments.Include(d=>d.Doctor).Include(p=>p.Patient).ToListAsync();
         }
     }
 }

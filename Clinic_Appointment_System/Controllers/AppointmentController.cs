@@ -2,24 +2,31 @@
 using Clinic_Appointment_System.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Clinic_Appointment_System.Controllers
 {
     public class AppointmentController : Controller
     {
         readonly IAppointmentService _appointmentService;
+        readonly IDoctorService _doctorService;
 
-
-        public async Task<IEnumerable<Appointment>> GetAllAppointment()
+        public AppointmentController(IAppointmentService appointmentService, IDoctorService doctorService)
         {
-           
-            return View(await _appointmentService.GetAllAppointmentsAsync());
+            _appointmentService = appointmentService;
+            _doctorService = doctorService;
+        }
+
+        public async Task<IActionResult> GetAllAppointments()
+        {
+            var appointments = await _appointmentService.GetAllAppointmentsAsync();
+            return View(appointments); 
         }
         [HttpPost]
-        public async Task<IEnumerable<Appointment>> GetAllAppointments(int userId)
+        public async Task<IActionResult> GetAllAppointments(int userId)
         {
-            return View(await _appointmentService.GetAllAppointmentsAsync(userId));
-
+            var appointments = await _appointmentService.GetAllAppointmentsAsync(userId);
+            return View(appointments);
         }
 
 
@@ -34,6 +41,7 @@ namespace Clinic_Appointment_System.Controllers
         public async Task<IActionResult> AddAppointment()
         {
 
+            ViewData["DoctorId"] = new SelectList(await _doctorService.GetAllDoctorsAsync(), "DoctorId", "Name"); 
             return View();
 
         }

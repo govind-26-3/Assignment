@@ -2,6 +2,6 @@
 {
     public enum Status
     {
-        Scheduled = 1, Completed, Canceled
+        Scheduled =1, Completed=2, Canceled=3
     }
 }

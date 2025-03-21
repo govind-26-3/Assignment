@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinic_Appointment_System", "Clinic_Appointment_System.csproj", "{9BC5B1BD-AB2D-4E83-8AEF-D53E53014F9A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicApp.Tests", "..\ClinicApp.Tests\ClinicApp.Tests.csproj", "{0682C171-C922-4085-B4D3-2B43FB13C269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{9BC5B1BD-AB2D-4E83-8AEF-D53E53014F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BC5B1BD-AB2D-4E83-8AEF-D53E53014F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BC5B1BD-AB2D-4E83-8AEF-D53E53014F9A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0682C171-C922-4085-B4D3-2B43FB13C269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0682C171-C922-4085-B4D3-2B43FB13C269}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0682C171-C922-4085-B4D3-2B43FB13C269}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0682C171-C922-4085-B4D3-2B43FB13C269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
