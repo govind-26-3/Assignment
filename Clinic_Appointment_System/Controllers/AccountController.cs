@@ -31,7 +31,7 @@ namespace Clinic_Appointment_System.Controllers
                 var result = await _userManager.CreateAsync(createdUser, user.Password);
                 if (result.Succeeded)
                 {
-                    
+
                     await _userManager.AddToRoleAsync(createdUser, Role.Patient);
                     return RedirectToAction("Login");
                 }
@@ -60,13 +60,24 @@ namespace Clinic_Appointment_System.Controllers
                     var user = await _userManager.FindByEmailAsync(login.Email);
                     if (user != null)
                     {
-                        
+
                         HttpContext.Session.SetString("UserId", user.Id.ToString());
                         Console.WriteLine("Session Set: " + HttpContext.Session.GetString("UserId"));
+
+                        var roles = await _userManager.GetRolesAsync(user);
+                        if (roles.Contains("Admin"))
+                        {
+                            
+                            return RedirectToAction("GetAllUsers", "Admin");
+                        }
+                        else if (roles.Contains("Patient"))
+                        {
+                            return RedirectToAction("GetAllAppointments", "Appointment");
+                        }
                     }
-                    return RedirectToAction("GetAllAppointments", "Appointment");
+
                 }
-                ModelState.AddModelError("", "Login failed. Please check your email and password.");
+                ModelState.AddModelError("", "Login failed. Please check your email and password.  Or  Register");
             }
             return View(login);
         }

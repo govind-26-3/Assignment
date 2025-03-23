@@ -11,7 +11,8 @@ namespace Clinic_Appointment_System.Configurations
             builder.HasData(
                 new IdentityUserRole<string>
                 {
-                    UserId = "7a6b802c-ea37-4f51-b5aa-f25af027c4fa",
+                    
+                    UserId = "3d31173d-9396-46aa-999a-49a59c46d3ad",
                     RoleId = "a76f06ef-4878-49cb-o7e2-6489cb3454ba",
 
                 });

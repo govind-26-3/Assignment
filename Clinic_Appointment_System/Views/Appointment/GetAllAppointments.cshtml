@@ -1,16 +1,25 @@
-﻿@model IEnumerable<Clinic_Appointment_System.Models.Appointment>
+﻿ 
+@model IEnumerable<Clinic_Appointment_System.Models.Appointment>
 
 @{
     ViewData["Title"] = "GetAllAppointments";
 }
 <h1>All Appointments</h1>
-@* <h1>GetAllAppointments</h1> *@
 
 <p> 
-    <a asp-action="AddAppointment">Create New Appointment</a> 
- </p>
+    <a asp-action="AddAppointment" class="btn btn-primary">Create New Appointment</a>
+</p>
+@if (!Model.Any()) 
+{   
+    <tr>
+        <td colspan="5" class="text-center text-danger">No appointment booked!!</td>
+    </tr>
+}
+else{
+
 <table class="table">
     <thead>
+
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Patient)
@@ -43,11 +52,12 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.AppointmentId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.AppointmentId">Delete</a>
+                    <a asp-action="EditAppointmentStatus" asp-route-id="@item.AppointmentId" class="btn btn-warning">Edit Status</a> |
+                    @* <a asp-action="Details" asp-route-id="@item.AppointmentId" class="btn btn-primary">Details</a> | *@
+                    <a asp-action="DeleteAppointment" asp-route-id="@item.AppointmentId" class="btn btn-danger">Cancel Appointment</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+}

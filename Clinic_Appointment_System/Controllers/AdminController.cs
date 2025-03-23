@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Clinic_Appointment_System.Models;
-using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
 
-[Authorize(Roles = "Admin")] // Ensure only admins can access this controller
+[Authorize(Roles = "Admin")] 
 public class AdminController : Controller
 {
-     readonly UserManager<User> _userManager; // UserManager for managing users
-     readonly RoleManager<IdentityRole> _roleManager; // RoleManager for managing roles
+     readonly UserManager<User> _userManager; 
+     readonly RoleManager<IdentityRole> _roleManager; 
 
     public AdminController(UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
     {
@@ -17,45 +17,19 @@ public class AdminController : Controller
         _roleManager = roleManager;
     }
 
-    // GET: Admin Dashboard
+    
     public IActionResult Index()
     {
         return View();
     }
 
-    // GET: Manage Users
+   
     public async Task<IActionResult> GetAllUsers()
     {
-        var users = _userManager.Users; // Get all users
+        var users = _userManager.Users; 
         return View(await users.ToListAsync());
     }
 
-    //// GET: Create User
-    //public IActionResult CreateUser()
-    //{
-    //    return View();
-    //}
-
-    //// POST: Create User
-    //[HttpPost]
-    //public async Task<IActionResult> CreateUser(User user, string password)
-    //{
-    //    if (ModelState.IsValid)
-    //    {
-    //        var result = await _userManager.CreateAsync(user, password);
-    //        if (result.Succeeded)
-    //        {
-    //            return RedirectToAction("Users");
-    //        }
-    //        foreach (var error in result.Errors)
-    //        {
-    //            ModelState.AddModelError(string.Empty, error.Description);
-    //        }
-    //    }
-    //    return View(user);
-    //}
-
-    // GET: Edit User
     public async Task<IActionResult> EditUser(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
@@ -66,13 +40,24 @@ public class AdminController : Controller
         return View(user);
     }
 
-    // POST: Edit User
+   
     [HttpPost]
     public async Task<IActionResult> EditUser(User user)
     {
         if (ModelState.IsValid)
         {
-            var result = await _userManager.UpdateAsync(user);
+            var existingUser = await _userManager.FindByIdAsync(user.Id);
+            if (existingUser == null)
+            {
+                return NotFound();
+            }
+
+          
+            existingUser.FirstName = user.FirstName;
+            existingUser.LastName = user.LastName;
+
+            
+            var result = await _userManager.UpdateAsync(existingUser);
             if (result.Succeeded)
             {
                 return RedirectToAction("GetAllUsers");
@@ -85,7 +70,7 @@ public class AdminController : Controller
         return View(user);
     }
 
-    // GET: Delete User
+ 
     public async Task<IActionResult> DeleteUser(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
@@ -96,15 +81,15 @@ public class AdminController : Controller
         return View(user);
     }
 
-    // POST: Delete User
-    [HttpPost, ActionName("DeleteUser")]
-    public async Task<IActionResult> DeleteUserConfirmed(string id)
+    
+    [HttpPost]
+    public async Task<IActionResult> Delete(string id)
     {
         var user = await _userManager.FindByIdAsync(id);
         if (user != null)
         {
             await _userManager.DeleteAsync(user);
         }
-        return RedirectToAction("Users");
+        return RedirectToAction("GetAllUsers");
     }
 }

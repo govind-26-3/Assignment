@@ -1,4 +1,5 @@
 ﻿using Clinic_Appointment_System.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic_Appointment_System.Repository
 {
@@ -9,5 +10,7 @@ namespace Clinic_Appointment_System.Repository
         Task<int> AddDoctorAsync(Doctor doctor);
         Task<int> UpdateDoctorAsync(Doctor doctor);
         Task<int> DeleteDoctorAsync(int id);
+        //Task<IActionResult> GetAppointmentsByDoctor(int id);
+        Task<IEnumerable<Appointment>> GetAllAppointmentsByDoctorIdAsync(int id);
     }
 }

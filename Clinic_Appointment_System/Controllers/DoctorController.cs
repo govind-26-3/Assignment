@@ -2,6 +2,7 @@
 using Clinic_Appointment_System.Models;
 
 using Clinic_Appointment_System.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic_Appointment_System.Controllers
@@ -21,6 +22,7 @@ namespace Clinic_Appointment_System.Controllers
             return View(await _doctorService.GetAllDoctorsAsync());
         }
 
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> AddDoctor()
         {
             //var doctor = await _doctorService.GetDoctorByIdAsync(id);
@@ -70,6 +72,11 @@ namespace Clinic_Appointment_System.Controllers
         {
             await _doctorService.DeleteDoctorAsync(doctor.DoctorId);
             return RedirectToAction("GetAllDoctors");
+        }
+        public async Task<IActionResult> GetAppointmentsByDoctor(int doctorId)
+        {
+            var appointments = await _doctorService.GetAllAppointmentsByDoctorIdAsync(doctorId);
+            return View(appointments); 
         }
     }
 }

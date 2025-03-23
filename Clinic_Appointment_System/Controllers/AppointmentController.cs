@@ -1,8 +1,8 @@
-﻿using System.Security.Claims;
+﻿
 using Clinic_Appointment_System.Models;
 using Clinic_Appointment_System.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
@@ -20,20 +20,20 @@ namespace Clinic_Appointment_System.Controllers
             _doctorService = doctorService;
         }
 
-        
+
         public async Task<IActionResult> GetAllAppointments()
         {
-            
+
             var patientId = HttpContext.Session.GetString("UserId");
-            //Console.WriteLine("Retrieved Session: " + patientId);
+
             if (string.IsNullOrEmpty(patientId))
             {
                 return RedirectToAction("Login", "Account");
             }
-            
-                var appointments = await _appointmentService.GetAllAppointmentsAsync(patientId);
-                return View(appointments);
-            
+
+            var appointments = await _appointmentService.GetAllAppointmentsAsync(patientId);
+            return View(appointments);
+
         }
 
 
@@ -73,25 +73,28 @@ namespace Clinic_Appointment_System.Controllers
             return RedirectToAction("GetAllAppointments");
 
         }
+        public async Task<IActionResult> EditAppointmentStatus(int id)
+        {
+            return View(await _appointmentService.GetAppointmentByIdAsync(id));
+        }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(int id, string status)
+        public async Task<IActionResult> EditAppointmentStatus(int id, string status)
         {
             await _appointmentService.UpdateAppointmentStatusAsync(id, status);
             return RedirectToAction("GetAllAppointments");
         }
 
 
-
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        [HttpGet]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteAppointment(int id)
         {
             await _appointmentService.DeleteAppointmentAsync(id);
 
+
             return RedirectToAction("GetAllAppointments");
         }
-
 
     }
 }

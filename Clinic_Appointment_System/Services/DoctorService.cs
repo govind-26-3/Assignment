@@ -1,6 +1,7 @@
 ﻿using Clinic_Appointment_System.Exceptions;
 using Clinic_Appointment_System.Models;
 using Clinic_Appointment_System.Repository;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Clinic_Appointment_System.Services
 {
@@ -38,6 +39,14 @@ namespace Clinic_Appointment_System.Services
         public async Task<int> UpdateDoctorAsync(Doctor doctor)
         {
             return await _docRepository.UpdateDoctorAsync(doctor);
+        }
+
+        
+
+        public async Task<IEnumerable<Appointment>> GetAllAppointmentsByDoctorIdAsync(int id)
+        {
+            return await _docRepository.GetAllAppointmentsByDoctorIdAsync(id);
+            
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Clinic_Appointment_System.Context;
 using Clinic_Appointment_System.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.VisualBasic;
+
 
 
 namespace Clinic_Appointment_System.Repository
@@ -54,5 +54,15 @@ namespace Clinic_Appointment_System.Repository
             _context.Doctors.Update(doct);
             return await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Appointment>> GetAllAppointmentsByDoctorIdAsync(int id)
+        {
+            return await _context.Appointments
+                .Where(a => a.DoctorId == id)
+                .Include(a => a.Patient) 
+                .ToListAsync();
+        }
+
+        
     }
 }
