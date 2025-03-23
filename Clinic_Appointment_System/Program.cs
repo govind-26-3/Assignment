@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 
 
+
+
 namespace Clinic_Appointment_System
 {
     public class Program
@@ -15,8 +17,8 @@ namespace Clinic_Appointment_System
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
             // Add services to the container.
-            
             builder.Services.AddControllersWithViews();
             string conn = builder.Configuration.GetConnectionString("LocalConnectionString");
             builder.Services.AddDbContext<ClinicContext>(opt => opt.UseSqlServer(conn));
@@ -24,9 +26,15 @@ namespace Clinic_Appointment_System
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
-            builder.Services.AddIdentity<User,IdentityRole>()
+            builder.Services.AddIdentity<User, IdentityRole>()
                             .AddEntityFrameworkStores<ClinicContext>();
-
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(20);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             //builder.Services.AddDbContext<>
             var app = builder.Build();
@@ -42,11 +50,12 @@ namespace Clinic_Appointment_System
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            app.UseAuthentication();
-
             app.UseRouting();
 
-            //app.UseAuthorization();
+            app.UseSession();
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.MapControllerRoute(
                 name: "default",

@@ -8,17 +8,17 @@ namespace Clinic_Appointment_System.Repository
 {
     public class AppointmentRepository : IAppointmentRepository
     {
-         readonly ClinicContext _context;
+        readonly ClinicContext _context;
 
         public AppointmentRepository(ClinicContext context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(int userId)
+        public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync(string userId)
         {
-            return await _context.Appointments
-                .Where(a => a.PatientId == userId)
+            return await _context.Appointments.Include(d => d.Doctor).Include(p => p.Patient)
+                .Where(a => a.PatientId.Equals(userId))
                 .ToListAsync();
         }
 
@@ -38,7 +38,7 @@ namespace Clinic_Appointment_System.Repository
             var appointment = await GetAppointmentByIdAsync(id);
             if (Enum.TryParse(status, true, out Status parStatus))
             {
-                
+
                 appointment.Status = parStatus;
                 return await _context.SaveChangesAsync();
             }
@@ -51,15 +51,14 @@ namespace Clinic_Appointment_System.Repository
             if (appointment != null)
             {
                 _context.Appointments.Remove(appointment);
-               return await _context.SaveChangesAsync();
+                return await _context.SaveChangesAsync();
             }
             return 0;
         }
 
         public async Task<IEnumerable<Appointment>> GetAllAppointmentsAsync()
         {
-            //return await _context.Appointments.ToListAsync();
-            return await _context.Appointments.Include(d=>d.Doctor).Include(p=>p.Patient).ToListAsync();
+            return await _context.Appointments.Include(d => d.Doctor).Include(p => p.Patient).ToListAsync();
         }
     }
 }
