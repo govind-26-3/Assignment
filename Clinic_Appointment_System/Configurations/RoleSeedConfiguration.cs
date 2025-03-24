@@ -11,6 +11,7 @@ namespace Clinic_Appointment_System.Configurations
             builder.HasData(
                 new IdentityRole
                 {
+                    //a76f06ef-4878-49cb-o7e2-6489cb3454ba
                     Id = "a76f06ef-4878-49cb-o7e2-6489cb3454ba",
                     Name = "Admin",
                     NormalizedName = "ADMIN"

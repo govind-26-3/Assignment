@@ -2,6 +2,7 @@
 using Clinic_Appointment_System.Models;
 
 using Clinic_Appointment_System.Services;
+using Clinic_Appointment_System.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -73,10 +74,20 @@ namespace Clinic_Appointment_System.Controllers
             await _doctorService.DeleteDoctorAsync(doctor.DoctorId);
             return RedirectToAction("GetAllDoctors");
         }
-        public async Task<IActionResult> GetAppointmentsByDoctor(int doctorId)
+
+        public async Task<IActionResult> GetAppointmentsByDoctor(int id)
         {
-            var appointments = await _doctorService.GetAllAppointmentsByDoctorIdAsync(doctorId);
-            return View(appointments); 
+            var appointments = await _doctorService.GetAllAppointmentsByDoctorIdAsync(id);
+            var appointmentViewModels = appointments.Select(a => new AppointmentViewModel
+            {
+                AppointmentId = a.AppointmentId,
+                PatientName = a.Patient.FirstName + " " + a.Patient.LastName, 
+                AppointmentDate = a.AppointmentDate,
+                Status = a.Status.ToString(),
+            }).ToList();
+
+            return View(appointmentViewModels); 
         }
+        
     }
 }
