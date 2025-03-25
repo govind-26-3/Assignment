@@ -15,7 +15,7 @@ else
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Appointment ID</th>
+				@* <th>Appointment ID</th> *@
 				<th>Patient Name</th>
 				<th>Appointment Date</th>
 				<th>Status</th>
@@ -25,7 +25,7 @@ else
 			@foreach (var appointment in Model)
 			{
 				<tr>
-					<td>@appointment.AppointmentId</td>
+					@* <td>@appointment.AppointmentId</td> *@
 					<td>@appointment.PatientName</td>
 					<td>@appointment.AppointmentDate</td>
 					<td>@appointment.Status</td>

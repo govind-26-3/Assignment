@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Identity;
 namespace Clinic_Appointment_System.Models
 {
 
-    public class User:IdentityUser
+    public class User : IdentityUser
+    //public class User
     {
         
 

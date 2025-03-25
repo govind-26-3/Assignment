@@ -1,16 +1,21 @@
 ﻿using Clinic_Appointment_System.Configurations;
 using Clinic_Appointment_System.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Clinic_Appointment_System.Context
 {
-    public class ClinicContext : IdentityDbContext<User>
+
+    //public class ClinicContext : IdentityDbContext<IdentityUser>
+    //public class ClinicContext : DbContext
+    public class ClinicContext : IdentityDbContext<User>  //extra properties
     {
         public ClinicContext(DbContextOptions<ClinicContext> options) : base(options)
         {
 
         }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

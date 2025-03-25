@@ -21,9 +21,9 @@ else{
     <thead>
 
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Patient)
-            </th>
+            @* <th> *@
+            @*     @Html.DisplayNameFor(model => model.Patient) *@
+            @* </th> *@
             <th>
                 @Html.DisplayNameFor(model => model.Doctor)
             </th>
@@ -39,9 +39,9 @@ else{
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Patient.FirstName)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.Patient.FirstName) *@
+            @* </td> *@
             <td>
                 @Html.DisplayFor(modelItem => item.Doctor.Name)
             </td>

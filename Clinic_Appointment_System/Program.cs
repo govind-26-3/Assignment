@@ -20,14 +20,18 @@ namespace Clinic_Appointment_System
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
             string conn = builder.Configuration.GetConnectionString("LocalConnectionString");
             builder.Services.AddDbContext<ClinicContext>(opt => opt.UseSqlServer(conn));
+
             builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
             builder.Services.AddScoped<IAppointmentService, AppointmentService>();
             builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
+
             builder.Services.AddIdentity<User, IdentityRole>()
                             .AddEntityFrameworkStores<ClinicContext>();
+
             builder.Services.AddDistributedMemoryCache();
             builder.Services.AddSession(options =>
             {

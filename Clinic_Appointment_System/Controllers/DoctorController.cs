@@ -26,8 +26,7 @@ namespace Clinic_Appointment_System.Controllers
         [Authorize(Roles ="Admin")]
         public async Task<IActionResult> AddDoctor()
         {
-            //var doctor = await _doctorService.GetDoctorByIdAsync(id);
-            //return View(doctor);
+           
             return View();
         }
 

@@ -62,7 +62,7 @@ namespace Clinic_Appointment_System.Controllers
                     {
 
                         HttpContext.Session.SetString("UserId", user.Id.ToString());
-                        Console.WriteLine("Session Set: " + HttpContext.Session.GetString("UserId"));
+                        //Console.WriteLine("Session Set: " + HttpContext.Session.GetString("UserId"));
 
                         var roles = await _userManager.GetRolesAsync(user);
                         if (roles.Contains("Admin"))
