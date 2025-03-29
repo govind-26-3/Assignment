@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECommerceApplication.Application.Interfaces;
 using ECommerceApplication.Domain;
 using MediatR;
 
@@ -10,9 +11,16 @@ namespace ECommerceApplication.Application.Features.ProductFeature.Query.GetProd
 {
     public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, Product>
     {
-        public Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+        readonly IProductRepository _productRepository;
+        public GetProductByIdQueryHandler(IProductRepository productRepository)
         {
-            throw new NotImplementedException();
+            _productRepository = productRepository;
+        }
+        public async Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+        {
+            var product = await _productRepository.GetProductByIdAsync(request.id);
+            return product;
+            
         }
     }
 }

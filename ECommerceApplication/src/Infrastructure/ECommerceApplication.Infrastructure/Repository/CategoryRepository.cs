@@ -1,33 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using ECommerceApplication.Application.Interfaces;
 using ECommerceApplication.Domain;
+using ECommerceApplication.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApplication.Infrastructure.Repository
 {
     internal class CategoryRepository : ICategoryRepository
     {
-        public Task<Category> AddCategoryAsync(Category category)
+        readonly EcommerceDbContext _eCommerceDbContext;
+
+        public CategoryRepository(EcommerceDbContext eCommerceDbContext)
         {
-            throw new NotImplementedException();
+            _eCommerceDbContext = eCommerceDbContext;
         }
 
-        public Task<bool> DeleteCategoryAsync(int id)
+
+        public async Task<IEnumerable<Category>> GetCategories()
         {
-            throw new NotImplementedException();
+            return await _eCommerceDbContext.Categories.ToListAsync();
         }
 
-        public Task<IEnumerable<Category>> GetCategories()
+
+        public async Task<Category> GetCategoryByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _eCommerceDbContext.Categories.FindAsync(id);
         }
 
-        public Task<Category> UpdateCategoryAsync(int CategoryId, Category category)
+
+        public async Task<Category> AddCategoryAsync(Category category)
         {
-            throw new NotImplementedException();
+            await _eCommerceDbContext.Categories.AddAsync(category);
+            await _eCommerceDbContext.SaveChangesAsync();
+            return category;
+        }
+
+
+        public async Task<Category> UpdateCategoryAsync(int categoryId, Category category)
+        {
+            if (categoryId != category.CId)
+            {
+                throw new ArgumentException("Category ID mismatch");
+            }
+
+            _eCommerceDbContext.Entry(category).State = EntityState.Modified;
+            await _eCommerceDbContext.SaveChangesAsync();
+            return category;
+        }
+
+
+        public async Task<bool> DeleteCategoryAsync(int id)
+        {
+            var category = await _eCommerceDbContext.Categories.FindAsync(id);
+            if (category == null)
+            {
+                return false;
+            }
+            _eCommerceDbContext.Categories.Remove(category);
+            await _eCommerceDbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

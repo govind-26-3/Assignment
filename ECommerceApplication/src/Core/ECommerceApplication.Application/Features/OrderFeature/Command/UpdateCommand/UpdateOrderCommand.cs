@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using ECommerceApplication.Domain;
 using MediatR;
 
-namespace ECommerceApplication.Application.Features.ProductFeature.Query.GetAllProduct
+namespace ECommerceApplication.Application.Features.OrderFeature.Command.UpdateCommand
 {
-    public class GetAllProductsQuery():IRequest<IEnumerable<Product>>;
-    
+    public record UpdateOrderCommand(Orders order) : IRequest<Orders>;
 }

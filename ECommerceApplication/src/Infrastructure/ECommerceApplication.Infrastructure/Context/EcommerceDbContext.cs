@@ -8,11 +8,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApplication.Infrastructure.Context
 {
-    internal class EcommerceDbContext:DbContext
+    public class EcommerceDbContext : DbContext
     {
+        public EcommerceDbContext(DbContextOptions<EcommerceDbContext> options) : base(options) { }
+
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
+     
+
+
 
     }
 }

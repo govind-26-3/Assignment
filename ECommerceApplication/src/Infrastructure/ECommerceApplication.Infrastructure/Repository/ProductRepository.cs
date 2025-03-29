@@ -44,7 +44,7 @@ namespace ECommerceApplication.Infrastructure.Repository
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            return await _eCommerceDbContext.Products.ToListAsync();
+            return await _eCommerceDbContext.Products.Include(c=>c.Category).ToListAsync();
         }
 
 

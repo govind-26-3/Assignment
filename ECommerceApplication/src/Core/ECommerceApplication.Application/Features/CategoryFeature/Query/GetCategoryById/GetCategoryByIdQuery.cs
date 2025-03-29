@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using ECommerceApplication.Domain;
 using MediatR;
 
-namespace ECommerceApplication.Application.Features.ProductFeature.Query.GetAllProduct
+namespace ECommerceApplication.Application.Features.CategoryFeature.Query.GetCategoryById
 {
-    public class GetAllProductsQuery():IRequest<IEnumerable<Product>>;
+    public record GetCategoryByIdQuery(int id):IRequest<Category>;
     
 }
