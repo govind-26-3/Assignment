@@ -15,7 +15,8 @@ namespace ECommerceApplication.Application.Interfaces
         Task<Orders> GetOrderByIdAsync(int id);
 
 
-        Task<Orders> AddOrderAsync(Orders order);
+        
+        Task<Orders> AddOrderAsync(Orders order,int productId);
 
 
         Task<Orders> UpdateOrderAsync(int id,Orders order);

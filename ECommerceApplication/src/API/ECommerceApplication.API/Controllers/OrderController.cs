@@ -13,7 +13,7 @@ namespace ECommerceApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class OrderController : ControllerBase
+    public class OrderController : Controller
     {
         private readonly IMediator _mediator;
 
@@ -52,7 +52,7 @@ namespace ECommerceApplication.API.Controllers
 
         // PUT: api/order/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrder(int id, [FromBody] UpdateOrderCommand command)
+        public async Task<IActionResult> UpdateOrder(int id,  UpdateOrderCommand command)
         {
             if (id != command.order.OrderId)
             {

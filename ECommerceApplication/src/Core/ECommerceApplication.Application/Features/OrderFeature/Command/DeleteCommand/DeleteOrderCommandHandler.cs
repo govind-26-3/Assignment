@@ -1,5 +1,6 @@
 ﻿
 
+using ECommerceApplication.Application.Exceptions;
 using ECommerceApplication.Application.Interfaces;
 using MediatR;
 using System.Threading;
@@ -18,7 +19,15 @@ namespace ECommerceApplication.Application.Features.OrderFeature.Command.DeleteC
 
         public async Task<bool> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
-            return await _orderRepository.DeleteOrderAsync(request.id);
+
+            var orderFindStatus = await _orderRepository.GetOrderByIdAsync(request.id);
+            if (orderFindStatus is null)
+            {
+                throw new NotFoundException($"Order with Id::{request.id} not found");
+
+            }
+            return await _orderRepository.DeleteOrderAsync(orderFindStatus.OrderId);
+
         }
     }
 }

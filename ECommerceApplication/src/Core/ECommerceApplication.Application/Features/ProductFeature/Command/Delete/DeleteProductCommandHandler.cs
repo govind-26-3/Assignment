@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECommerceApplication.Application.Exceptions;
 using ECommerceApplication.Application.Interfaces;
 using ECommerceApplication.Domain;
 using MediatR;
@@ -22,7 +23,7 @@ namespace ECommerceApplication.Application.Features.ProductFeature.Command.Delet
             var findProduct = await _repository.GetProductByIdAsync(request.id);
             if (findProduct is null) {
 
-                //throw new NotFoundException($"Book with Id::{request.id} not found");
+                throw new NotFoundException($"Product with Id::{request.id} not found");
             }
             return await _repository.DeleteProductAsync(findProduct.ProductId);
         }

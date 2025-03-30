@@ -21,6 +21,8 @@ namespace ECommerceApplication.Infrastructure
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
 
             return services;
 

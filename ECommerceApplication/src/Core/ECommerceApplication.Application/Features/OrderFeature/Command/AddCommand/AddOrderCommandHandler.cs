@@ -22,7 +22,7 @@ namespace ECommerceApplication.Application.Features.OrderFeature.Command.AddComm
 
         public async Task<Orders> Handle(AddOrderCommand request, CancellationToken cancellationToken)
         {        
-            return await _orderRepository.AddOrderAsync(request.order);
+            return await _orderRepository.AddOrderAsync(request.order,request.productId);
         }
     }
 }

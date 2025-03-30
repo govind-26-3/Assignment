@@ -13,7 +13,7 @@ namespace ECommerceApplication.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class CategoryController : Controller
     {
          readonly IMediator _mediator;
 

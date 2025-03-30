@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
 using ECommerceApplication.Domain;
+using ECommerceApplication.Application.Features.CartFeature.Query.GetCartItemByIdQueryHandler;
+using ECommerceApplication.Application.Features.CartFeature.Command.DeleteCommand;
+using ECommerceApplication.Application.Features.CartFeature.Command.UpdateCommand;
+using ECommerceApplication.Application.Features.CartFeature.Command.AddCommand;
+using ECommerceApplication.Application.Features.CartFeature.Query.GetCartItemsQuery;
 namespace ECommerceApplication.API.Controllers
 {
 
@@ -15,7 +20,6 @@ namespace ECommerceApplication.API.Controllers
             _mediator = mediator;
         }
 
-        // GET: api/cart/{userId}
         [HttpGet("{userId}")]
         public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems(int userId)
         {
@@ -23,17 +27,17 @@ namespace ECommerceApplication.API.Controllers
             return Ok(cartItems);
         }
 
-        // POST: api/cart
+        
         [HttpPost]
-        public async Task<ActionResult<CartItem>> AddCartItem([FromBody] AddCartItemCommand command)
+        public async Task<ActionResult<CartItem>> AddCartItem( AddCartItemCommand command)
         {
             var cartItem = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetCartItemById), new { cartItemId = cartItem.CartItemId }, cartItem);
         }
 
-        // PUT: api/cart/{cartItemId}
+        
         [HttpPut("{cartItemId}")]
-        public async Task<IActionResult> UpdateCartItem(int cartItemId, [FromBody] UpdateCartItemCommand command)
+        public async Task<IActionResult> UpdateCartItem(int cartItemId, UpdateCartItemCommand command)
         {
             if (cartItemId != command.CartItemId)
             {
@@ -44,7 +48,7 @@ namespace ECommerceApplication.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/cart/{cartItemId}
+        
         [HttpDelete("{cartItemId}")]
         public async Task<IActionResult> DeleteCartItem(int cartItemId)
         {
@@ -56,7 +60,7 @@ namespace ECommerceApplication.API.Controllers
             return NoContent();
         }
 
-        // GET: api/cart/item/{cartItemId}
+        
         [HttpGet("item/{cartItemId}")]
         public async Task<ActionResult<CartItem>> GetCartItemById(int cartItemId)
         {

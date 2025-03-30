@@ -17,6 +17,11 @@ namespace ECommerceApplication.Infrastructure.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Orders> Orders { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
+
+        public DbSet<User> Users { get; set; }
+
      
 
 
