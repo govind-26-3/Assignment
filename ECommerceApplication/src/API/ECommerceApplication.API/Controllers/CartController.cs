@@ -6,36 +6,51 @@ using ECommerceApplication.Application.Features.CartFeature.Command.DeleteComman
 using ECommerceApplication.Application.Features.CartFeature.Command.UpdateCommand;
 using ECommerceApplication.Application.Features.CartFeature.Command.AddCommand;
 using ECommerceApplication.Application.Features.CartFeature.Query.GetCartItemsQuery;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using ECommerceApplication.Identity.Model;
+using ECommerceApplication.Application.Features.OrderFeature.Command.AddCommand;
+
+
+
 namespace ECommerceApplication.API.Controllers
 {
-
+    [Authorize(Roles ="User")]
     [Route("api/[controller]")]
     [ApiController]
     public class CartController : Controller
     {
-        private readonly IMediator _mediator;
+        readonly IMediator _mediator;
+        readonly UserManager<ApplicationUser> _userManager;
 
-        public CartController(IMediator mediator)
+        public CartController(IMediator mediator, UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
+            _userManager = userManager;
+        }
+        [HttpPost]
+        public async Task<ActionResult<CartItem>> AddCartItem([FromQuery]int productId, [FromBody] int quantity)
+        {
+            var userEmail = _userManager.GetUserId(User);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user.Id == null)
+            {
+                return Unauthorized();
+            }
+           
+            var cartItemCommand = new AddCartItemCommand(user.Id, quantity, productId);
+            var cartItem = await _mediator.Send(cartItemCommand);
+            //return CreatedAtAction(nameof(GetCartItemById), new { cartItemId = cartItem.CartItemId }, cartItem);
+            return Ok(cartItem);
         }
 
         [HttpGet("{userId}")]
-        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems(int userId)
+        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems(string userId)
         {
             var cartItems = await _mediator.Send(new GetCartItemsQuery(userId));
             return Ok(cartItems);
         }
-
-        
-        [HttpPost]
-        public async Task<ActionResult<CartItem>> AddCartItem( AddCartItemCommand command)
-        {
-            var cartItem = await _mediator.Send(command);
-            return CreatedAtAction(nameof(GetCartItemById), new { cartItemId = cartItem.CartItemId }, cartItem);
-        }
-
-        
+   
         [HttpPut("{cartItemId}")]
         public async Task<IActionResult> UpdateCartItem(int cartItemId, UpdateCartItemCommand command)
         {
@@ -71,5 +86,6 @@ namespace ECommerceApplication.API.Controllers
             }
             return Ok(cartItem);
         }
+
     }
 }

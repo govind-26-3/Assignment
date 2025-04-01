@@ -5,32 +5,30 @@
 namespace ECommerceApplication.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class orderItemsUpdated : Migration
+    public partial class AddedEnum : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<int>(
-                name: "Quantity",
-                table: "OrderItems",
+                name: "Status",
+                table: "Orders",
                 type: "int",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<int>(
-                name: "Quantity",
-                table: "OrderItems",
-                type: "int",
+            migrationBuilder.AlterColumn<string>(
+                name: "Status",
+                table: "Orders",
+                type: "nvarchar(max)",
                 nullable: false,
-                defaultValue: 0,
                 oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
+                oldType: "int");
         }
     }
 }

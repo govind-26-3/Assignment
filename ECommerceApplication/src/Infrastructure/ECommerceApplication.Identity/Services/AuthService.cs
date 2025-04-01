@@ -31,7 +31,7 @@ namespace ECommerceApplication.Identity.Services
             var user = await _userManager.FindByEmailAsync(authRequest.Email);
             if (user == null)
             {
-                throw new NotFoundException($"user with Email{authRequest.Email} not exists");
+                throw new NotFoundException($"User with Email: {authRequest.Email} not exists.");
             }
             var userPassword = await _signInManger.CheckPasswordSignInAsync(user, authRequest.Password, false);
             if (userPassword.Succeeded == false)

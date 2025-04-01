@@ -4,15 +4,18 @@ using ECommerceApplication.Application.Features.ProductFeature.Query.GetAllProdu
 using ECommerceApplication.Application.Features.ProductFeature.Query.GetProductById;
 using ECommerceApplication.Domain;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApplication.API.Controllers
 {
+    //[Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProductController : Controller
     {
         readonly IMediator _mediator;
+
 
         public ProductController(IMediator mediator)
         {
@@ -43,17 +46,7 @@ namespace ECommerceApplication.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductAsync(int id)
         {
-            #region Exception Handling
-            //try
-            //{
-            //    var result = await _mediator.Send(new DeleteProductCommand(id));
-            //    return Ok(result);
-            //}
-            //catch(NotFoundException ex)
-            //{
-            //    return NotFound(ex.Message);
-            //}
-            #endregion
+            
             var result = await _mediator.Send(new DeleteProductCommand(id));
             return Ok(result);
 

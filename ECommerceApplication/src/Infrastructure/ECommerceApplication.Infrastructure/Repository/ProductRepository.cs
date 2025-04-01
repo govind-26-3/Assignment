@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApplication.Infrastructure.Repository
 {
-    internal class ProductRepository : IProductRepository
+    public class ProductRepository : IProductRepository
     {
         protected readonly EcommerceDbContext _eCommerceDbContext;
         public ProductRepository(EcommerceDbContext eCommerceDbContext)

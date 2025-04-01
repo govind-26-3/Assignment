@@ -1,28 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using ECommerceApplication.Domain;
 using ECommerceApplication.Application.Features.OrderFeature.Command.UpdateCommand;
 using ECommerceApplication.Application.Features.OrderFeature.Query.GetAllOrdersQuery;
 using ECommerceApplication.Application.Features.OrderFeature.Query.GetOrderByIdQuery;
 using ECommerceApplication.Application.Features.OrderFeature.Command.AddCommand;
 using ECommerceApplication.Application.Features.OrderFeature.Command.DeleteCommand;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using ECommerceApplication.Identity.Model;
 
 namespace ECommerceApplication.API.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly UserManager<ApplicationUser> _userManager; 
 
-        public OrderController(IMediator mediator)
+        public OrderController(IMediator mediator, UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
+            _userManager = userManager;
         }
 
-        // GET: api/order
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Orders>>> GetOrders()
         {
@@ -30,7 +34,7 @@ namespace ECommerceApplication.API.Controllers
             return Ok(orders);
         }
 
-        // GET: api/order/{id}
+       
         [HttpGet("{id}")]
         public async Task<ActionResult<Orders>> GetOrderById(int id)
         {
@@ -42,15 +46,22 @@ namespace ECommerceApplication.API.Controllers
             return Ok(order);
         }
 
-        // POST: api/order
+       
         [HttpPost]
-        public async Task<ActionResult<Orders>> AddOrder([FromBody] AddOrderCommand command)
+        public async Task<ActionResult<Orders>> AddOrder([FromQuery] int productId, [FromBody] int quantity)
         {
-            var order = await _mediator.Send(command);
+            var userEmail = _userManager.GetUserId(User);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user.Id == null)
+            {
+                return Unauthorized(); 
+            }
+            var addOrderCommand = new AddOrderCommand(user.Id, quantity, productId);
+            var order = await _mediator.Send(addOrderCommand);
             return CreatedAtAction(nameof(GetOrderById), new { id = order.OrderId }, order);
         }
 
-        // PUT: api/order/{id}
+        
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOrder(int id,  UpdateOrderCommand command)
         {
@@ -63,7 +74,7 @@ namespace ECommerceApplication.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/order/{id}
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrder(int id)
         {

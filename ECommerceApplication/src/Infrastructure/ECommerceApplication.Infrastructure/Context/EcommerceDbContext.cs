@@ -20,7 +20,7 @@ namespace ECommerceApplication.Infrastructure.Context
 
         public DbSet<OrderItem> OrderItems { get; set; }
 
-        public DbSet<User> Users { get; set; }
+        
 
      
 

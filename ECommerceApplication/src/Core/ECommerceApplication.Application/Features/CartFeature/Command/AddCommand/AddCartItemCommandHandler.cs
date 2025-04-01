@@ -16,7 +16,7 @@ namespace ECommerceApplication.Application.Features.CartFeature.Command.AddComma
 
         public async Task<CartItem> Handle(AddCartItemCommand request, CancellationToken cancellationToken)
         {
-            return await _cartRepository.AddCartItemAsync(request.CartItem);
+            return await _cartRepository.AddCartItemAsync(request.userId, request.quantity,request.productId);
         }
     }
 }

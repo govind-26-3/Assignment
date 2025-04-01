@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApplication.Infrastructure.Repository
 {
-    internal class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepository
     {
         readonly EcommerceDbContext _eCommerceDbContext;
 

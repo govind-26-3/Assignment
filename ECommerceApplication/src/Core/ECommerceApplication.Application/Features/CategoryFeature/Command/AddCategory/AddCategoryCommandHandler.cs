@@ -9,7 +9,7 @@ using MediatR;
 
 namespace ECommerceApplication.Application.Features.CategoryFeature.Command.AddCategory
 {
-    internal class AddCategoryCommandHandler : IRequestHandler<AddCategoryCommand, Category>
+    public class AddCategoryCommandHandler : IRequestHandler<AddCategoryCommand, Category>
     {
         readonly ICategoryRepository _categoryRepository;
 

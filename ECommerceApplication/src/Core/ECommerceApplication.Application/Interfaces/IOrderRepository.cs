@@ -16,7 +16,8 @@ namespace ECommerceApplication.Application.Interfaces
 
 
         
-        Task<Orders> AddOrderAsync(Orders order,int productId);
+        Task<Orders> AddOrderAsync(string userId,int quantity,int productId);
+        //Task<Orders> AddOrderAsync(string userId,Orders order,int productId);
 
 
         Task<Orders> UpdateOrderAsync(int id,Orders order);

@@ -29,7 +29,7 @@ namespace ECommerceApplication.API.Controllers
 
         
         [HttpPost]
-        public async Task<ActionResult<OrderItem>> AddOrderItem( AddOrderItemCommand command)
+        public async Task<ActionResult<OrderItem>> AddOrderItem(AddOrderItemCommand command)
         {
             var orderItem = await _mediator.Send(command);
             return CreatedAtAction(nameof(GetOrderItemById), new { orderItemId = orderItem.OrderItemId }, orderItem);

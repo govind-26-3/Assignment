@@ -13,7 +13,9 @@ namespace ECommerceApplication.Application.Features.OrderFeature.Command.AddComm
 
     public class AddOrderCommandHandler : IRequestHandler<AddOrderCommand, Orders>
     {
-        private readonly IOrderRepository _orderRepository;
+        readonly IOrderRepository _orderRepository;
+    
+
 
         public AddOrderCommandHandler(IOrderRepository orderRepository)
         {
@@ -21,8 +23,12 @@ namespace ECommerceApplication.Application.Features.OrderFeature.Command.AddComm
         }
 
         public async Task<Orders> Handle(AddOrderCommand request, CancellationToken cancellationToken)
-        {        
-            return await _orderRepository.AddOrderAsync(request.order,request.productId);
-        }
+        {
+           
+
+            return await _orderRepository.AddOrderAsync(request.UserId,request.quantity,request.ProductId);
+
+        
+    }
     }
 }

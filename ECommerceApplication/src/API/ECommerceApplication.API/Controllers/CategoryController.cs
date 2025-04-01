@@ -8,9 +8,11 @@ using ECommerceApplication.Application.Features.CategoryFeature.Query.GetAllCate
 using ECommerceApplication.Application.Features.CategoryFeature.Query.GetCategoryById;
 using ECommerceApplication.Application.Features.CategoryFeature.Command.AddCategory;
 using ECommerceApplication.Application.Features.CategoryFeature.Command.DeleteCategory;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerceApplication.API.Controllers
 {
+    //[Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : Controller

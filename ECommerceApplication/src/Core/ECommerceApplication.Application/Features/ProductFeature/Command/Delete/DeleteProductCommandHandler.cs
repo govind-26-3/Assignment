@@ -10,7 +10,7 @@ using MediatR;
 
 namespace ECommerceApplication.Application.Features.ProductFeature.Command.Delete
 {
-    internal class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, bool>
+    public class DeleteProductCommandHandler : IRequestHandler<DeleteProductCommand, bool>
     {
         readonly IProductRepository _repository;
 

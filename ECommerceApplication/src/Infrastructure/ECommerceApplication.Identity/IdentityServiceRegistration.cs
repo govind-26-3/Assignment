@@ -1,5 +1,6 @@
 ﻿
 using ECommerceApplication.Application.Interfaces.Identity;
+using ECommerceApplication.Application.Models.Identity;
 using ECommerceApplication.Identity.Context;
 using ECommerceApplication.Identity.Model;
 using ECommerceApplication.Identity.Services;
@@ -18,10 +19,10 @@ namespace ECommerceApplication.Identity
     {
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
-            //services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+            services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
             services.AddDbContext<ECommerceAppIdentityDbContext>(options =>
 
-                options.UseSqlServer(configuration.GetConnectionString("ECommerceWebAppDb")));
+                options.UseSqlServer(configuration.GetConnectionString("ECommerceWebAppConnString")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>().
                 AddEntityFrameworkStores<ECommerceAppIdentityDbContext>().AddDefaultTokenProviders();

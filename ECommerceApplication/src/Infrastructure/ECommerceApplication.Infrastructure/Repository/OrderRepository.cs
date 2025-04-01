@@ -1,6 +1,7 @@
 ﻿
 using ECommerceApplication.Application.Interfaces;
 using ECommerceApplication.Domain;
+using ECommerceApplication.Domain.Constants;
 using ECommerceApplication.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,9 +21,11 @@ namespace ECommerceApplication.Infrastructure.Repository
         }
 
 
-        public async Task<Orders> AddOrderAsync(Orders order, int productId)
+        public async Task<Orders> AddOrderAsync(string userid ,int quantity, int productId)
         {
-            int quantity = 1;
+
+
+            //int quantity = 1;
             if (quantity < 0)
             {
                 throw new ArgumentException("Quantity cannot be less than 0.");
@@ -36,19 +39,34 @@ namespace ECommerceApplication.Infrastructure.Repository
             }
 
 
+            var orders = new Orders
+            {
+                UserId = userid,
+                TotalAmount =quantity * (decimal) product.Price,
+                OrderDate = DateTime.Now,
+                Status = OrderStatus.Pending
+                
+            };
+
             if (quantity > product.Stock)
             {
                 throw new InvalidOperationException("Insufficient stock available for the requested product.");
             }
 
-            await _context.Orders.AddAsync(order);
+            await _context.Orders.AddAsync(orders);
             await _context.SaveChangesAsync();
+
+            var lastOrder = await _context.Orders
+            .OrderByDescending(o => o.OrderId)
+            .FirstOrDefaultAsync();
+
 
             var orderItem = new OrderItem
             {
-                OrderId = order.OrderId,
+                OrderId = lastOrder.OrderId,
                 ProductId = productId,
-                Quantity = quantity
+                Quantity = quantity ,
+                
             };
             await _orderItemRepository.AddOrderItemAsync(orderItem);
 
@@ -57,7 +75,7 @@ namespace ECommerceApplication.Infrastructure.Repository
             _context.Products.Update(product);
             await _context.SaveChangesAsync();
 
-            return order;
+            return orders;
         }
 
 
@@ -83,7 +101,7 @@ namespace ECommerceApplication.Infrastructure.Repository
 
         public async Task<IEnumerable<Orders>> GetOrdersAsync()
         {
-            return await _context.Orders.Include(u => u.User).ToListAsync();
+            return await _context.Orders.ToListAsync();
         }
 
 
