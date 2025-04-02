@@ -31,6 +31,7 @@ namespace ECommerceApplication.API
                 app.UseSwaggerUI();
             }
             app.UseMiddleware<ExceptionMiddleware>();
+
             app.UseCors(x => x.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()

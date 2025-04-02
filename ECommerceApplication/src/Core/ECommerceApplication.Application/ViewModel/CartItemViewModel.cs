@@ -8,6 +8,7 @@ namespace ECommerceApplication.Application.ViewModel
 {
     public class CartItemViewModel
     {
-       public int Quantity { get; set; }
+      
+        public int Quantity { get; set; }
     }
 }

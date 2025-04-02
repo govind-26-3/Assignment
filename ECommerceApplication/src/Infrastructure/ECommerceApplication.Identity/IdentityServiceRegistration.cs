@@ -20,6 +20,7 @@ namespace ECommerceApplication.Identity
         public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+
             services.AddDbContext<ECommerceAppIdentityDbContext>(options =>
 
                 options.UseSqlServer(configuration.GetConnectionString("ECommerceWebAppConnString")));

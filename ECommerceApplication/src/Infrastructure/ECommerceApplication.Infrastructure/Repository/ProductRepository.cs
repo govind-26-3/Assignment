@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ECommerceApplication.Application.Exceptions;
 using ECommerceApplication.Application.Interfaces;
 using ECommerceApplication.Domain;
 using ECommerceApplication.Infrastructure.Context;
@@ -44,15 +45,29 @@ namespace ECommerceApplication.Infrastructure.Repository
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            return await _eCommerceDbContext.Products.Include(c=>c.Category).ToListAsync();
+            return await _eCommerceDbContext.Products.Include(c => c.Category).ToListAsync();
         }
 
 
 
 
-        public Task<Product> UpdateProductAsync(int ProductId, Product product)
+        public async Task<Product> UpdateProductAsync(int productId, Product product)
         {
-            throw new NotImplementedException();
+
+            var existingProduct = await GetProductByIdAsync(productId);
+
+
+            if (existingProduct == null)
+            {
+                throw new NotFoundException($"Product with id: {productId} Not Found.");
+            }
+
+            existingProduct.PName = product.PName;
+            existingProduct.Price = product.Price;
+            existingProduct.Description = product.Description;
+
+            await _eCommerceDbContext.SaveChangesAsync();
+            return existingProduct;
         }
     }
 }

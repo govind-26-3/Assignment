@@ -21,11 +21,30 @@ namespace ECommerceApplication.Infrastructure.Repository
         }
 
 
-        public async Task<Orders> AddOrderAsync(string userid ,int quantity, int productId)
+
+        public async Task<Orders> CreateOrderByCartAsync(int cartItemId)
+        {
+
+            //var cartItem = _context.CartItems.Where(x => x.CartItemId == cartItemId);
+            var cartItem = await _context.CartItems.FirstOrDefaultAsync(x => x.CartItemId == cartItemId);
+
+
+            //var order = new Orders
+            //{
+
+            //};
+
+            var resultOrder = await AddOrderAsync(cartItem.UserId, cartItem.Quantity, cartItem.ProductId);
+            _context.CartItems.Remove(cartItem);
+            _context.SaveChanges();
+            return resultOrder;
+
+        }
+            public async Task<Orders> AddOrderAsync(string userid, int quantity, int productId)
         {
 
 
-            //int quantity = 1;
+
             if (quantity < 0)
             {
                 throw new ArgumentException("Quantity cannot be less than 0.");
@@ -42,10 +61,10 @@ namespace ECommerceApplication.Infrastructure.Repository
             var orders = new Orders
             {
                 UserId = userid,
-                TotalAmount =quantity * (decimal) product.Price,
+                TotalAmount = quantity * (decimal)product.Price,
                 OrderDate = DateTime.Now,
                 Status = OrderStatus.Pending
-                
+
             };
 
             if (quantity > product.Stock)
@@ -54,7 +73,7 @@ namespace ECommerceApplication.Infrastructure.Repository
             }
 
             await _context.Orders.AddAsync(orders);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             var lastOrder = await _context.Orders
             .OrderByDescending(o => o.OrderId)
@@ -65,15 +84,25 @@ namespace ECommerceApplication.Infrastructure.Repository
             {
                 OrderId = lastOrder.OrderId,
                 ProductId = productId,
-                Quantity = quantity ,
-                
+                Quantity = quantity,
+
             };
+
             await _orderItemRepository.AddOrderItemAsync(orderItem);
 
             product.Stock -= quantity;
 
             _context.Products.Update(product);
+
+       //     var cartItems = await _context.CartItems
+       //.Where(ci => ci.CartItemId == cartItemId) 
+       //.ToListAsync();
+
+       //     _context.CartItems.RemoveRange(cartItems); 
+
             await _context.SaveChangesAsync();
+
+
 
             return orders;
         }
@@ -114,7 +143,7 @@ namespace ECommerceApplication.Infrastructure.Repository
                 throw new ArgumentException("Order not found");
             }
 
-            //existingOrder.OrderDate = order.OrderDate;
+
             existingOrder.Status = order.Status;
             existingOrder.TotalAmount = order.TotalAmount;
 

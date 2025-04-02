@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using ECommerceApplication.Identity.Model;
 using ECommerceApplication.Application.Features.OrderFeature.Command.AddCommand;
+using ECommerceApplication.Application.ViewModel;
 
 
 
@@ -29,7 +30,8 @@ namespace ECommerceApplication.API.Controllers
             _userManager = userManager;
         }
         [HttpPost]
-        public async Task<ActionResult<CartItem>> AddCartItem([FromQuery]int productId, [FromBody] int quantity)
+        //public async Task<ActionResult<CartItem>> AddCartItem([FromQuery]int productId, [FromBody] int quantity)
+        public async Task<ActionResult<CartItem>> AddCartItem([FromQuery]int productId, [FromBody] CartItemViewModel cartItemViewModel)
         {
             var userEmail = _userManager.GetUserId(User);
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -38,8 +40,9 @@ namespace ECommerceApplication.API.Controllers
                 return Unauthorized();
             }
            
-            var cartItemCommand = new AddCartItemCommand(user.Id, quantity, productId);
+            var cartItemCommand = new AddCartItemCommand(user.Id, cartItemViewModel.Quantity, productId);
             var cartItem = await _mediator.Send(cartItemCommand);
+
             //return CreatedAtAction(nameof(GetCartItemById), new { cartItemId = cartItem.CartItemId }, cartItem);
             return Ok(cartItem);
         }

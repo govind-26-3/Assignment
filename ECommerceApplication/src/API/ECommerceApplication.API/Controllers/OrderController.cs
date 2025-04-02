@@ -9,6 +9,9 @@ using ECommerceApplication.Application.Features.OrderFeature.Command.DeleteComma
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using ECommerceApplication.Identity.Model;
+using ECommerceApplication.Infrastructure.Context;
+using ECommerceApplication.Domain.Constants;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApplication.API.Controllers
 {
@@ -17,10 +20,11 @@ namespace ECommerceApplication.API.Controllers
     [ApiController]
     public class OrderController : Controller
     {
-        private readonly IMediator _mediator;
-        private readonly UserManager<ApplicationUser> _userManager; 
+         readonly IMediator _mediator;
+         readonly EcommerceDbContext _ecommerceDbContext;
+         readonly UserManager<ApplicationUser> _userManager; 
 
-        public OrderController(IMediator mediator, UserManager<ApplicationUser> userManager)
+        public OrderController(IMediator mediator, UserManager<ApplicationUser> userManager,EcommerceDbContext ecommerceDbContext)
         {
             _mediator = mediator;
             _userManager = userManager;
@@ -84,6 +88,30 @@ namespace ECommerceApplication.API.Controllers
                 return NotFound();
             }
             return NoContent();
+        }
+
+        [HttpGet("myOrders")]
+        public async Task<ActionResult<IEnumerable<Orders>>> MyOrders()
+        {
+            
+            var userId = _userManager.GetUserId(User); 
+
+            if (userId == null)
+            {
+                return Unauthorized(); 
+            }
+
+       
+            var deliveredOrders = await _ecommerceDbContext.Orders
+                .Where(o => o.UserId == userId && o.Status == OrderStatus.Delivered)
+                .ToListAsync();
+
+            if (deliveredOrders == null || !deliveredOrders.Any())
+            {
+                return NotFound("No delivered orders found for this user.");
+            }
+
+            return Ok(deliveredOrders); 
         }
     }
 }

@@ -92,7 +92,7 @@ namespace ECommerceApplication.Identity.Services
                 Email = registrationRequest.Email,
                 FirstName = registrationRequest.FirstName,
                 LastName = registrationRequest.LastName,
-                UserName = registrationRequest.Username,
+                UserName = registrationRequest.Email,
                 EmailConfirmed = true
             };
             var result = await _userManager.CreateAsync(user, registrationRequest.Password);
