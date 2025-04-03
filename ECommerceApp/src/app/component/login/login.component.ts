@@ -24,7 +24,7 @@ export class LoginComponent {
   
 
   ngonInit() {
-    // this.loginUser();
+    
   }
   
   loginUser(loginForm: NgForm) {
@@ -33,6 +33,9 @@ export class LoginComponent {
     this.userService.login(this.loginModel).subscribe({
       next: (response: AuthResponseModel) => {
         console.log('Login Success', response);
+        localStorage.setItem('userId', response.id);
+        
+        
         localStorage.setItem('token', response.token);
         alert('Login Success');
         

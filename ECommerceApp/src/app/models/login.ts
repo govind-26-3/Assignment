@@ -10,18 +10,18 @@ export class Login {
 
 export class AuthResponseModel {
   token: string;
-  userId: string;
+  id: string;
   userName: string;
   userEmail: string;
 
   constructor(
     token: string,
-    userId: string,
+    id: string,
     userName: string,
     userEmail: string
   ) {
     this.token = token;
-    this.userId = userId;
+    this.id = id;
     this.userName = userName;
 
     this.userEmail = userEmail;

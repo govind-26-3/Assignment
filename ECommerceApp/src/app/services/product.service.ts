@@ -16,4 +16,7 @@ export class ProductService {
     return this.http.get<Product[]>(this.apiUrl);
   }
   
+  addToCart(payload: any) {
+    return this.http.post(`https://localhost:7252/api/Cart/add`, payload);
+  }
 }

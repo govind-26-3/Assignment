@@ -1,16 +1,13 @@
 
 @for (product of products;track product){
-<div class="card" style="width: 15rem">
-  <img src="https://picsum.photos/200" class="card-img-top" alt="..." />
-  <div class="card-body">
-    <h5 class="card-title">{{product.pName}}</h5>
-    <p class="card-text">
-      {{product.description}}
-    </p>
-    <input type="number" [(ngModel)]="product.quantity" min="1" placeholder="Quantity" />
-    <button (click)="addItemToCart(product.id)">Add to Cart</button>
-
-    <a href="#" class="btn btn-primary" (click)="oncart()">Add to Cart</a>
+  <div class="card" style="width: 15rem">
+    <img src="https://picsum.photos/200" class="card-img-top" alt="..." />
+    <div class="card-body">
+      <h5 class="card-title">{{ product.pName }}</h5>
+      <p class="card-text">{{ product.description }}</p>
+      <p class="card-text">${{ product.price }}</p>
+      <input type="number" [(ngModel)]="product.quantity" min="1" placeholder="Quantity" />
+      <button (click)="addItemToCart(product.productId, product.quantity)">Add to Cart</button>
+    </div>
   </div>
-</div>
 }

@@ -20,4 +20,8 @@ export class UserService {
   register(registerData: Register): Observable<RegistrationResponse> {
     return this.http.post<RegistrationResponse>(`${this.baseUrl}/register`, registerData);
   }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem('token') !== null;
+  }
 }

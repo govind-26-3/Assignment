@@ -10,12 +10,9 @@ export class CartService {
   private apiUrl = 'https://localhost:7252/api/Cart';
   constructor(private http:HttpClient) { }
 
-  addToCart(productId: number, quantity: number) {
-    const cartItem = { productId, quantity };
-    return this.http.post(`${this.apiUrl}/add`, cartItem);
-  }
+ 
   getCartItems():Observable<Cart[]>{
-    return this.http.get<Cart[]>(`${this.apiUrl}/items`);
+    return this.http.get<Cart[]>(`${this.apiUrl}`);
   }
   removeFromCart(productId: number) {
     return this.http.delete(`${this.apiUrl}/remove/${productId}`);

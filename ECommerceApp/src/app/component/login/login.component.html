@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <form #loginForm="ngForm" (ngSubmit)="loginUser (loginForm)" class="login-form">
+  <form #loginForm="ngForm" (ngSubmit)="loginUser(loginForm)" class="login-form">
     <h1 class="text-center mb-4">Login</h1>
     <div class="inputs">
       <div class="mb-3">
@@ -9,8 +9,8 @@
           class="form-control"
           id="email"
           required
-          #email="ngModel"
           name="email"
+          #email="ngModel"
           [(ngModel)]="loginModel.email"
         />
         <span *ngIf="email.invalid && email.touched" class="error-message">Email is required</span>
