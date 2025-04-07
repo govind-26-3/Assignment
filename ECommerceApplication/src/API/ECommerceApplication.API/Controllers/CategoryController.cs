@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace ECommerceApplication.API.Controllers
 {
-    //[Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class CategoryController : Controller

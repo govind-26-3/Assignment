@@ -22,7 +22,7 @@ namespace ECommerceApplication.Application.Features.OrderItemFeature.Query.GetOr
 
         public async Task<IEnumerable<OrderItem>> Handle(GetOrderItemsQuery request, CancellationToken cancellationToken)
         {
-            return await _orderItemRepository.GetOrderItemsAsync(request.OrderId);
+            return await _orderItemRepository.GetOrderItemsAsync(request.OrderId,request.userId);
         }
     }
 }

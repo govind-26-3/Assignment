@@ -1,4 +1,5 @@
 ﻿
+using ECommerceApplication.Application.Exceptions;
 using ECommerceApplication.Application.Interfaces;
 using ECommerceApplication.Domain;
 using ECommerceApplication.Domain.Constants;
@@ -25,14 +26,9 @@ namespace ECommerceApplication.Infrastructure.Repository
         public async Task<Orders> CreateOrderByCartAsync(int cartItemId)
         {
 
-            //var cartItem = _context.CartItems.Where(x => x.CartItemId == cartItemId);
+
             var cartItem = await _context.CartItems.FirstOrDefaultAsync(x => x.CartItemId == cartItemId);
 
-
-            //var order = new Orders
-            //{
-
-            //};
 
             var resultOrder = await AddOrderAsync(cartItem.UserId, cartItem.Quantity, cartItem.ProductId);
             _context.CartItems.Remove(cartItem);
@@ -40,7 +36,7 @@ namespace ECommerceApplication.Infrastructure.Repository
             return resultOrder;
 
         }
-            public async Task<Orders> AddOrderAsync(string userid, int quantity, int productId)
+        public async Task<Orders> AddOrderAsync(string userid, int quantity, int productId)
         {
 
 
@@ -49,15 +45,11 @@ namespace ECommerceApplication.Infrastructure.Repository
             {
                 throw new ArgumentException("Quantity cannot be less than 0.");
             }
-
-
             var product = await _context.Products.FindAsync(productId);
             if (product == null)
             {
-                throw new ArgumentException("Product not found.");
+                throw new NotFoundException("Product not found.");
             }
-
-
             var orders = new Orders
             {
                 UserId = userid,
@@ -94,15 +86,9 @@ namespace ECommerceApplication.Infrastructure.Repository
 
             _context.Products.Update(product);
 
-       //     var cartItems = await _context.CartItems
-       //.Where(ci => ci.CartItemId == cartItemId) 
-       //.ToListAsync();
 
-       //     _context.CartItems.RemoveRange(cartItems); 
 
             await _context.SaveChangesAsync();
-
-
 
             return orders;
         }
@@ -124,8 +110,10 @@ namespace ECommerceApplication.Infrastructure.Repository
 
         public async Task<Orders> GetOrderByIdAsync(int id)
         {
+
             return await _context.Orders.FindAsync(id);
         }
+
 
 
         public async Task<IEnumerable<Orders>> GetOrdersAsync()
@@ -152,6 +140,20 @@ namespace ECommerceApplication.Infrastructure.Repository
             await _context.SaveChangesAsync();
 
             return existingOrder;
+        }
+
+        public async Task<IEnumerable<Orders>> GetOrdersByUserIdAsync(string id)
+        {
+            var deliveredOrders = await _context.Orders
+            .Where(o => o.UserId == id && o.Status == OrderStatus.Pending)
+            .ToListAsync();
+
+            if (deliveredOrders == null || !deliveredOrders.Any())
+            {
+                throw new NotFoundException("No delivered orders found for this user.");
+            }
+
+            return deliveredOrders;
         }
     }
 }

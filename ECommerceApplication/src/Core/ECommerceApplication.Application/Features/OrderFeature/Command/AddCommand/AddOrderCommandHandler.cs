@@ -26,7 +26,8 @@ namespace ECommerceApplication.Application.Features.OrderFeature.Command.AddComm
         {
            
 
-            return await _orderRepository.AddOrderAsync(request.UserId,request.quantity,request.ProductId);
+            return await _orderRepository.CreateOrderByCartAsync(request.cartItemId);
+            //return await _orderRepository.AddOrderAsync(request.UserId,request.quantity,request.ProductId);
 
         
     }

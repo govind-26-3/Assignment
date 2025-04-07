@@ -14,20 +14,26 @@ namespace ECommerceApplication.Infrastructure.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<OrderItem>> GetOrderItemsAsync(int orderId)
+        public async Task<IEnumerable<OrderItem>> GetOrderItemsAsync(int orderId,string userId)
         {
             return await _context.OrderItems
                 .Include(oi => oi.Product) 
-                .Where(oi => oi.OrderId == orderId)
+                .Where(oi => oi.OrderId == orderId && oi.Order.UserId == userId)
                 .ToListAsync();
         }
 
         public async Task<OrderItem> GetOrderItemByIdAsync(int orderItemId)
         {
             return await _context.OrderItems
-                .Include(oi => oi.Product) 
+                .Include(oi => oi.Product)
                 .FirstOrDefaultAsync(oi => oi.OrderItemId == orderItemId);
         }
+        //public async Task<OrderItem> GetOrderItemByIdAsync(int orderId)
+        //{
+        //    return await _context.OrderItems
+        //        .Include(oi => oi.Product)
+        //        .FirstOrDefaultAsync(oi => oi.OrderId == orderId);
+        //}
 
         public async Task<OrderItem> AddOrderItemAsync(OrderItem orderItem)
         {

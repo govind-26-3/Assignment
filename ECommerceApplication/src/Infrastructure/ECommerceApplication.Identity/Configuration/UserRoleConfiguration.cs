@@ -16,7 +16,7 @@ namespace ECommerceApplication.Identity.Configuration
             builder.HasData(
                new IdentityUserRole<string>
                {             
-                           //41776008 - 6086 - 1fbf - b923 - 2879a6680b9a
+                           
                    RoleId = "41776008 - 6086 - 1ebe - b923 - 2879a6680b9a",
                    UserId = "41776062 - 6087 - 1fbf - b923 - 2879a6680b9a"
 

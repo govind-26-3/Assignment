@@ -8,6 +8,7 @@ using MediatR;
 
 namespace ECommerceApplication.Application.Features.OrderFeature.Query.GetOrderByIdQuery
 {
-    public record GetOrderByIdQuery(int id):IRequest<Orders>;
+    //public record GetOrderByIdQuery(string id):IRequest<Orders>;
+    public record GetOrderByIdQuery(int id) :IRequest<Orders>;
     
 }

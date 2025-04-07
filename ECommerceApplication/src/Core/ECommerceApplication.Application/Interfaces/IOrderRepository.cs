@@ -12,10 +12,12 @@ namespace ECommerceApplication.Application.Interfaces
         Task<IEnumerable<Orders>> GetOrdersAsync();
 
 
+        Task<IEnumerable<Orders>> GetOrdersByUserIdAsync(string id);
         Task<Orders> GetOrderByIdAsync(int id);
 
+         Task<Orders> CreateOrderByCartAsync(int cartItemId);
 
-        
+
         Task<Orders> AddOrderAsync(string userId,int quantity,int productId);
         //Task<Orders> AddOrderAsync(string userId,Orders order,int productId);
 

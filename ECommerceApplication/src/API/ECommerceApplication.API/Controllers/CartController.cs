@@ -29,9 +29,9 @@ namespace ECommerceApplication.API.Controllers
             _mediator = mediator;
             _userManager = userManager;
         }
-        [HttpPost]
+        [HttpPost("add")]
         //public async Task<ActionResult<CartItem>> AddCartItem([FromQuery]int productId, [FromBody] int quantity)
-        public async Task<ActionResult<CartItem>> AddCartItem([FromQuery]int productId, [FromBody] CartItemViewModel cartItemViewModel)
+        public async Task<ActionResult<CartItem>> AddCartItem( [FromBody] CartItemViewModel cartItemViewModel)
         {
             var userEmail = _userManager.GetUserId(User);
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -39,18 +39,23 @@ namespace ECommerceApplication.API.Controllers
             {
                 return Unauthorized();
             }
-           
-            var cartItemCommand = new AddCartItemCommand(user.Id, cartItemViewModel.Quantity, productId);
+  
+            var cartItemCommand = new AddCartItemCommand(user.Id, cartItemViewModel.Quantity, cartItemViewModel.productId);
             var cartItem = await _mediator.Send(cartItemCommand);
 
-            //return CreatedAtAction(nameof(GetCartItemById), new { cartItemId = cartItem.CartItemId }, cartItem);
             return Ok(cartItem);
         }
 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems(string userId)
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<CartItem>>> GetCartItems()
         {
-            var cartItems = await _mediator.Send(new GetCartItemsQuery(userId));
+            var userEmail = _userManager.GetUserId(User);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user.Id == null)
+            {
+                return Unauthorized();
+            }
+            var cartItems = await _mediator.Send(new GetCartItemsQuery(user.Id));
             return Ok(cartItems);
         }
    

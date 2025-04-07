@@ -6,24 +6,35 @@ using ECommerceApplication.Application.Features.OrderItemFeature.Command.AddOrde
 using ECommerceApplication.Application.Features.OrderItemFeature.Command.UpdateOrderItemCommand;
 using ECommerceApplication.Application.Features.OrderItemFeature.Command.DeleteOrderItemCommand;
 using ECommerceApplication.Application.Features.OrderItemFeature.Query.GetOrderItemByIdQuery;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using ECommerceApplication.Identity.Model;
 namespace ECommerceApplication.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderItemController : Controller
     {
-        private readonly IMediator _mediator;
-
-        public OrderItemController(IMediator mediator)
+        readonly IMediator _mediator;
+        readonly UserManager<ApplicationUser> _userManager;
+        public OrderItemController(IMediator mediator,UserManager<ApplicationUser> userManager)
         {
             _mediator = mediator;
+            _userManager = userManager;
         }
 
         
         [HttpGet("{orderId}")]
         public async Task<ActionResult<IEnumerable<OrderItem>>> GetOrderItems(int orderId)
         {
-            var orderItems = await _mediator.Send(new GetOrderItemsQuery(orderId));
+            var userEmail = _userManager.GetUserId(User);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user.Id == null)
+            {
+                return Unauthorized();
+            }
+            var orderItems = await _mediator.Send(new GetOrderItemsQuery(orderId,user.Id));
             return Ok(orderItems);
         }
 

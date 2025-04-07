@@ -14,12 +14,13 @@ namespace ECommerceApplication.Infrastructure.Repository
     public class CartRepository : ICartRepository
     {
         readonly EcommerceDbContext _context;
-        readonly UserManager<ApplicationUser> _userManager;
+        //readonly UserManager<ApplicationUser> _userManager;
+        readonly IProductRepository _productRepository;
 
-        public CartRepository(EcommerceDbContext context,UserManager<ApplicationUser> userManager)
+        public CartRepository(EcommerceDbContext context, IProductRepository productRepository)
         {
             _context = context;
-            _userManager = userManager;
+            _productRepository = productRepository;
         }
 
 
@@ -41,19 +42,28 @@ namespace ECommerceApplication.Infrastructure.Repository
         }
 
 
-        public async Task<CartItem> AddCartItemAsync(string userId,int quantity,int productId)
+        public async Task<CartItem> AddCartItemAsync(string userId, int quantity, int productId)
         {
-            var cartItem = new CartItem
-            {
-                ProductId =productId,
-                UserId = userId,
-                Quantity = quantity
-                
-            };
+            var existingCartItem = _context.CartItems.FirstOrDefault(x => x.ProductId == productId && x.UserId == userId);
 
-            await _context.CartItems.AddAsync(cartItem);
+            if (existingCartItem == null)
+            {
+                var newcartItem = new CartItem
+                {
+                    ProductId = productId,
+                    UserId = userId,
+                    Quantity = quantity
+                };
+                await _context.CartItems.AddAsync(newcartItem);
+                await _context.SaveChangesAsync();
+                return newcartItem;
+            }
+            existingCartItem.Quantity += quantity;
+
+             _context.CartItems.Update(existingCartItem);
             await _context.SaveChangesAsync();
-            return cartItem;
+            return existingCartItem;
+
         }
 
 
@@ -70,6 +80,7 @@ namespace ECommerceApplication.Infrastructure.Repository
             await _context.SaveChangesAsync();
             return existingCartItem;
         }
+
 
 
         public async Task<bool> DeleteCartItemAsync(int cartItemId)

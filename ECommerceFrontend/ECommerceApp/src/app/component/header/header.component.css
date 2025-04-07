@@ -1,0 +1,45 @@
+
+.navbar {
+    background-color: #f8f9fa; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+
+
+.navbar-brand {
+    font-weight: bold; 
+    color: #007bff; 
+}
+
+
+.nav-link {
+    color: #495057; 
+    transition: color 0.3s; 
+}
+
+
+
+
+.nav-link.active {
+    font-weight: bold;
+    color: #007bff; 
+}
+
+
+.navbar-toggler {
+    border-color: rgba(0, 0, 0, 0.1); 
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba(0, 0, 0, 0.5)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E"); /* Custom icon */
+}
+
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px; 
+    }
+}
+a{
+    background: #ffffff;
+    margin-left: 10px;
+}

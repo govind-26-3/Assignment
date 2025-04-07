@@ -8,5 +8,5 @@ using MediatR;
 
 namespace ECommerceApplication.Application.Features.OrderItemFeature.Query.GetOrderItemsQuery
 {
-    public record GetOrderItemsQuery(int OrderId) : IRequest<IEnumerable<OrderItem>>;
+    public record GetOrderItemsQuery(int OrderId,string userId) : IRequest<IEnumerable<OrderItem>>;
 }

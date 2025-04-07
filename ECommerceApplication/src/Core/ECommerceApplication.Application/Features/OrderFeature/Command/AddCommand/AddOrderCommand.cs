@@ -8,7 +8,8 @@ using MediatR;
 
 namespace ECommerceApplication.Application.Features.OrderFeature.Command.AddCommand
 {
-    public record AddOrderCommand(string UserId, int quantity, int ProductId) : IRequest<Orders>;
+    //public record AddOrderCommand(string UserId, int quantity, int ProductId) : IRequest<Orders>;
+    public record AddOrderCommand(int cartItemId) : IRequest<Orders>;
 }
     
 

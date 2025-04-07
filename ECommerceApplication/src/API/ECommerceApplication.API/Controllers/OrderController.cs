@@ -12,10 +12,11 @@ using ECommerceApplication.Identity.Model;
 using ECommerceApplication.Infrastructure.Context;
 using ECommerceApplication.Domain.Constants;
 using Microsoft.EntityFrameworkCore;
+using ECommerceApplication.Application.Features.OrderFeature.Query.GetOrdersByUserIdQuery;
 
 namespace ECommerceApplication.API.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class OrderController : Controller
@@ -42,6 +43,7 @@ namespace ECommerceApplication.API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Orders>> GetOrderById(int id)
         {
+
             var order = await _mediator.Send(new GetOrderByIdQuery(id));
             if (order == null)
             {
@@ -50,9 +52,24 @@ namespace ECommerceApplication.API.Controllers
             return Ok(order);
         }
 
+        //public async Task<ActionResult<Orders>> GetOrderById(string id)
        
+        //[HttpPost]
+        //public async Task<ActionResult<Orders>> AddOrder([FromQuery] int productId, [FromBody] int quantity)
+        //{
+        //    var userEmail = _userManager.GetUserId(User);
+        //    var user = await _userManager.FindByEmailAsync(userEmail);
+        //    if (user.Id == null)
+        //    {
+        //        return Unauthorized(); 
+        //    }
+        //    var addOrderCommand = new AddOrderCommand(user.Id, quantity, productId);
+        //    var order = await _mediator.Send(addOrderCommand);
+        //    return CreatedAtAction(nameof(GetOrderById), new { id = order.OrderId }, order);
+        //}
+
         [HttpPost]
-        public async Task<ActionResult<Orders>> AddOrder([FromQuery] int productId, [FromBody] int quantity)
+        public async Task<ActionResult<Orders>> AddOrder([FromBody] int cartItemId)
         {
             var userEmail = _userManager.GetUserId(User);
             var user = await _userManager.FindByEmailAsync(userEmail);
@@ -60,7 +77,9 @@ namespace ECommerceApplication.API.Controllers
             {
                 return Unauthorized(); 
             }
-            var addOrderCommand = new AddOrderCommand(user.Id, quantity, productId);
+            //var addOrderCommand = new AddOrderCommand(user.Id, quantity, productId);
+            var addOrderCommand = new AddOrderCommand(cartItemId);
+
             var order = await _mediator.Send(addOrderCommand);
             return CreatedAtAction(nameof(GetOrderById), new { id = order.OrderId }, order);
         }
@@ -93,25 +112,22 @@ namespace ECommerceApplication.API.Controllers
         [HttpGet("myOrders")]
         public async Task<ActionResult<IEnumerable<Orders>>> MyOrders()
         {
-            
-            var userId = _userManager.GetUserId(User); 
 
-            if (userId == null)
+            var userEmail = _userManager.GetUserId(User);
+            var user = await _userManager.FindByEmailAsync(userEmail);
+            if (user.Id == null)
             {
-                return Unauthorized(); 
+                return Unauthorized();
+            }
+            var orders = await _mediator.Send(new GetOrdersByUserIdQuery(user.Id));
+
+            if (orders == null || !orders.Any()) 
+            {
+                return NotFound();
             }
 
-       
-            var deliveredOrders = await _ecommerceDbContext.Orders
-                .Where(o => o.UserId == userId && o.Status == OrderStatus.Delivered)
-                .ToListAsync();
+            return Ok(orders);
 
-            if (deliveredOrders == null || !deliveredOrders.Any())
-            {
-                return NotFound("No delivered orders found for this user.");
-            }
-
-            return Ok(deliveredOrders); 
         }
     }
 }

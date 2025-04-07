@@ -1,0 +1,15 @@
+<div class="container">
+  <h2>My Orders</h2>
+
+  <div *ngIf="orders.length === 0" class="alert alert-info">
+    You have no orders.
+  </div>
+
+  <div *ngFor="let order of orders" class="order-item">
+    <h3>Order ID: {{ order.orderId }}</h3>
+    <p>Date: {{ order.orderDate | date }}</p>
+    <p>Status: {{ orderStatus[order.status - 1] }}</p>
+    <p>Total: Rs. {{ order.totalAmount | number }}</p>
+    <hr />
+  </div>
+</div>

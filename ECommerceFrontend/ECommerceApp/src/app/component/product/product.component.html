@@ -1,0 +1,44 @@
+<!-- <div class="container">
+
+@for (product of products;track product){
+<div class="card item">
+  <div class="photo">
+    <a href="#none"
+      ><img src="../../../../public/iPhone 14 Pro Mockup - Free Download Images High Quality PNG, JPG - 107408.jpg" />
+    </a>
+    <div class="wish" div></div>
+  </div>
+  <div class="desc">
+    <small>{{ product.pName }}</small>
+    <span>{{ product.description }}</span>
+    <h5>28%<b>Rs. {{ product.price }}</b></h5>
+    <div class="quantity-input">
+    <input type="number" [(ngModel)]="product.quantity" min="1" max="8"placeholder="Quantity" required/>
+  </div>
+      <button class="button-33" (click)="addItemToCart(product.productId, product.quantity)">Add to Cart</button>
+  </div>
+</div>
+}
+</div> -->
+
+<div class="container">
+  <div class="row">
+    <div class="item" *ngFor="let product of products; ">
+      <div class="photo">
+        <a href="#none">
+          <img src="/iPhone 14 Pro Mockup - Free Download Images High Quality PNG, JPG - 107408.jpg" alt="{{ product.pName }}" />
+        </a>
+        <div class="wish"></div>
+      </div>
+      <div class="desc">
+        <small>{{ product.pName }}</small>
+        <span>{{ product.description }}</span>
+        <h5> <b>Rs. {{ product.price }}</b></h5>
+        <div class="quantity-input">
+          <input type="number" [(ngModel)]="product.quantity" min="1" max="8" placeholder="Quantity" required/>
+        </div>
+        <button class="button-33" (click)="addItemToCart(product.productId, product.quantity)">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
