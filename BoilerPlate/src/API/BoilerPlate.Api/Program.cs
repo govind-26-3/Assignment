@@ -1,4 +1,6 @@
 using BoilerPlate.Persistence;
+using BoilerPlate.Application;
+using BoilerPlate.Api.Middleware;
 
 namespace BoilerPlate.Api
 {
@@ -11,7 +13,7 @@ namespace BoilerPlate.Api
             // Add services to the container.
 
             builder.Services.AddControllers();
-
+            builder.Services.AddApplicaionService();
             builder.Services.AddPersistenceRegistration(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -27,6 +29,7 @@ namespace BoilerPlate.Api
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseHttpsRedirection();
 

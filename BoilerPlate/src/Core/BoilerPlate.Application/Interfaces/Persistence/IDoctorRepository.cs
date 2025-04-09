@@ -11,8 +11,9 @@ namespace BoilerPlate.Application.Interfaces.Persistence
     public interface IDoctorRepository
     {
         Task<IEnumerable<Doctor>> GetAllDoctorsAsync();
+        Task<Doctor> GetDoctorsByIdAsync(int id);
         Task<int> AddDoctorAsync(Doctor doctor);
-        Task<int> UpdateDoctorAsync(Doctor doctor);
+        Task<int> UpdateDoctorAsync(int id ,Doctor doctor);
         Task<int> DeleteDoctorAsync(int id);
     }
 }
