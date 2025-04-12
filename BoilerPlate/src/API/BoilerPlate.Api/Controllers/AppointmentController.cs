@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BoilerPlate.Api.Controllers
 {
-    //[Route("api/[controller]")]
+   
     [ApiController]
     [ApiVersion("1")]
    [Route("api/v{version:apiVersion}/[controller]")]

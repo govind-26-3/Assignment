@@ -30,6 +30,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\..\Infrastructure\BoilerPlate.Identity\BoilerPlate.Identity.csproj" />
 		<ProjectReference Include="..\..\Infrastructure\BoilerPlate.Persistence\BoilerPlate.Persistence.csproj" />
 	</ItemGroup>
 

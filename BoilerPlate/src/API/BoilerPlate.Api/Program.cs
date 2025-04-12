@@ -5,6 +5,7 @@ using Serilog;
 using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using BoilerPlate.Api.Services;
+using BoilerPlate.Identity;
 
 namespace BoilerPlate.Api
 {
@@ -35,11 +36,11 @@ namespace BoilerPlate.Api
             builder.Services.AddControllers();
             builder.Services.AddApplicaionService();
             builder.Services.AddPersistenceRegistration(builder.Configuration);
+            builder.Services.AddIdentityServices(builder.Configuration);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-
-
+        
 
             builder.Services.AddSwaggerGen(c =>
             {
@@ -68,6 +69,7 @@ namespace BoilerPlate.Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

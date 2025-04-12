@@ -8,7 +8,7 @@ using BoilerPlate.Application.Features.Doctors.Command.Delete;
 using Asp.Versioning;
 namespace BoilerPlate.Api.Controllers
 {
-    //[Route("api/[controller]")]
+   
     [ApiController]
     [ApiVersion("2")]
     [Route("api/v{version:apiVersion}/[controller]")]
