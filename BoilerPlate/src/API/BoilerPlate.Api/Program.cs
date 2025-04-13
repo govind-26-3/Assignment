@@ -6,6 +6,7 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using BoilerPlate.Api.Services;
 using BoilerPlate.Identity;
+using Microsoft.OpenApi.Models;
 
 namespace BoilerPlate.Api
 {
@@ -40,12 +41,42 @@ namespace BoilerPlate.Api
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-        
+
 
             builder.Services.AddSwaggerGen(c =>
             {
-                        c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API - V1", Version = "v1" });
-                        c.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API - V2", Version = "v2" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API - V1", Version = "v1" });
+                c.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "My API - V2", Version = "v2" });
+
+                // Add JWT Authentication
+                var securityScheme = new OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "Enter JWT token with Bearer prefix. Example: Bearer {token}"
+                };
+
+                c.AddSecurityDefinition("Bearer", securityScheme);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+{
+    {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Id = "Bearer",
+                Type = ReferenceType.SecurityScheme
+            }
+        },
+        Array.Empty<string>()
+    }
+};
+
+                c.AddSecurityRequirement(securityRequirement);
             });
 
             var app = builder.Build();
@@ -58,11 +89,11 @@ namespace BoilerPlate.Api
                 app.UseSwaggerUI(
                     options =>
                         {
-                           foreach (var description in provider.ApiVersionDescriptions)
-                              {
-           options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
-                              }
-                         });
+                            foreach (var description in provider.ApiVersionDescriptions)
+                            {
+                                options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", description.GroupName.ToUpperInvariant());
+                            }
+                        });
             }
             app.UseSerilogRequestLogging();
             app.UseMiddleware<ExceptionMiddleware>();

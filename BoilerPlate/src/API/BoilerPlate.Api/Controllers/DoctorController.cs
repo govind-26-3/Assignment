@@ -6,9 +6,10 @@ using BoilerPlate.Application.Features.Doctors.Command.AddDoctor;
 using BoilerPlate.Application.Features.Doctors.Command.UpdateDoctor;
 using BoilerPlate.Application.Features.Doctors.Command.Delete;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Authorization;
 namespace BoilerPlate.Api.Controllers
 {
-   
+    [Authorize]
     [ApiController]
     [ApiVersion("2")]
     [Route("api/v{version:apiVersion}/[controller]")]

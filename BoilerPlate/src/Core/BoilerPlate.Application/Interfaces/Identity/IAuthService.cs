@@ -11,5 +11,7 @@ namespace BoilerPlate.Application.Interfaces.Identity
     {
         Task<AuthResponse> Login(AuthRequest authRequest);
         Task<RegistrationResponse> Register(RegistrationRequest registrationRequest);
+
+        Task<RefreshTokenResponse> RefreshTokenAsync(RefreshTokenRequest request);
     }
 }
